@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 150" role="img" aria-label="Milo">
+  <rect width="128" height="150" rx="24" fill="#ffffff"/>
+  <path d="M42 49c0-13 9-23 22-23s22 10 22 23v8c0 13-9 23-22 23S42 70 42 57z" fill="#0d1117"/>
+  <path d="M51 53h26" fill="none" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
+  <path d="M56 63c5 4 11 4 16 0" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M64 26V14" fill="none" stroke="#0d1117" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="64" cy="11" r="6" fill="#3b82f6"/>
+  <path d="M43 79 31 93M85 79l12 14" fill="none" stroke="#0d1117" stroke-width="7" stroke-linecap="round"/>
+  <path d="M49 87h30" fill="none" stroke="#2dd4bf" stroke-width="8" stroke-linecap="round"/>
+  <path d="M54 99h20" fill="none" stroke="#3b82f6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M92 28l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="#2dd4bf"/>
+  <text x="64" y="133" text-anchor="middle" fill="#0d1117" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="0">Milo</text>
+</svg>

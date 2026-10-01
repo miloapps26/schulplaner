@@ -1,0 +1,175 @@
+﻿<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Milo CI Referenz</title>
+      <link rel="stylesheet" href="./tokens.css">
+    <link rel="stylesheet" href="./ci.css">
+  <link rel="icon" href="./assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="./assets/favicon.ico?v=1.4.0">
+  </head>
+  <body>
+    <div class="ci-app">
+      <header class="ci-topbar">
+        <div class="ci-brand">
+          <div class="ci-mark" aria-hidden="true">
+            <img class="ci-mark-img" src="./assets/milo-mark.svg" alt="">
+          </div>
+          <div>
+            <p class="ci-brand-title">LEQ</p>
+            <p class="ci-brand-subtitle">Audio Tools</p>
+          </div>
+        </div>
+        <div class="ci-topbar-meta">
+          <div class="ci-status">Ready</div>
+          <div class="ci-version">v1.0.1</div>
+          <button class="ci-logout-button" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <nav class="ci-tabs" aria-label="Werkzeuge">
+        <button class="ci-tab" type="button">
+          <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg>
+          LeqM Meter
+        </button>
+        <button class="ci-tab" type="button" aria-selected="true">
+          <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16"></path><path d="M4 16h16"></path><path d="M8 4v16"></path><path d="M16 4v16"></path></svg>
+          Stereo zu 5.1
+        </button>
+        <button class="ci-tab" type="button">
+          <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h16"></path><path d="M7 16V8"></path><path d="M12 16V4"></path><path d="M17 16v-6"></path></svg>
+          Reports
+        </button>
+      </nav>
+
+      <main class="ci-main">
+        <section class="ci-workspace">
+          <div>
+            <div class="ci-toolbar">
+              <div>
+                <p class="ci-section-kicker">Upmix</p>
+                <h1 class="ci-h1">Stereo zu 5.1</h1>
+              </div>
+              <div class="ci-toolbar-actions">
+                <span class="ci-badge" data-tone="success">Model ready</span>
+                <button class="ci-icon-button" type="button" aria-label="Zuruecksetzen">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v6h6"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="ci-dropzone">
+              <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16h16V8z"></path>
+                  <path d="M14 2v6h6"></path>
+                  <path d="M8 17a4 4 0 0 1 8 0"></path>
+                  <path d="M8 14v4"></path>
+                  <path d="M16 14v4"></path>
+                </svg>
+                <p class="ci-dropzone-title">Stereo auswaehlen</p>
+                <p class="ci-dropzone-note">Interleaved / L + R / ZIP</p>
+              </div>
+            </div>
+
+            <div class="ci-tool-row">
+              <div class="ci-tool-label">
+                <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                  <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                  <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                  <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                </svg>
+                Analyseprofil geladen
+              </div>
+              <span class="ci-pill-note">Optional</span>
+            </div>
+
+            <div class="ci-grid-meters" aria-label="Kanaele">
+              <div class="ci-meter"><span>L</span><span class="ci-meter-line"></span></div>
+              <div class="ci-meter" style="color: var(--milo-accent);"><span>C</span><span class="ci-meter-line"></span></div>
+              <div class="ci-meter"><span>R</span><span class="ci-meter-line"></span></div>
+              <div class="ci-meter" style="color: var(--milo-blue);"><span>Ls</span><span class="ci-meter-line"></span></div>
+              <div class="ci-meter" style="color: var(--milo-amber);"><span>LFE</span><span class="ci-meter-line"></span></div>
+              <div class="ci-meter" style="color: var(--milo-blue);"><span>Rs</span><span class="ci-meter-line"></span></div>
+            </div>
+
+            <div style="margin-top: var(--milo-space-8);">
+              <details class="ci-activity">
+                <summary>
+                  <span>Activity</span>
+                  <span class="ci-badge">3 steps</span>
+                </summary>
+                <pre class="ci-console">Input scanned: stereo.wav
+Profile loaded: conservative
+Waiting for output command...</pre>
+              </details>
+            </div>
+          </div>
+
+          <aside class="ci-stack">
+            <div class="ci-field">
+              <label class="ci-label">Verfahren</label>
+              <div class="ci-segmented">
+                <button type="button">Referenzmodell</button>
+                <button type="button" aria-pressed="true">Konservativ</button>
+              </div>
+            </div>
+
+            <div class="ci-field">
+              <label class="ci-label">Center <span class="ci-label-value">0.0 dB</span></label>
+              <input class="ci-slider" type="range" value="66">
+            </div>
+
+            <div class="ci-field">
+              <label class="ci-label">Surround <span class="ci-label-value">0.0 dB</span></label>
+              <input class="ci-slider" type="range" value="66">
+            </div>
+
+            <div class="ci-field">
+              <label class="ci-label">LFE <span class="ci-label-value">0.0 dB</span></label>
+              <input class="ci-slider" type="range" value="66">
+            </div>
+
+            <div class="ci-checks">
+              <label class="ci-checkbox"><input type="checkbox" checked> LFE 20-120 Hz</label>
+              <label class="ci-checkbox"><input type="checkbox"> Downmix-treu</label>
+            </div>
+
+            <div class="ci-field">
+              <label class="ci-label">LeqM</label>
+              <div class="ci-segmented">
+                <button type="button" aria-pressed="true">Eingangspegel</button>
+                <button type="button">Zielwert</button>
+              </div>
+            </div>
+
+            <div class="ci-input-grid">
+              <div class="ci-field">
+                <label class="ci-label">Ziel / dB LeqM</label>
+                <div class="ci-input-group ci-metric-input">
+                  <input value="82,0" aria-label="Zielwert">
+                  <span class="ci-input-unit">dB</span>
+                </div>
+              </div>
+              <div class="ci-field">
+                <label class="ci-label">Peak-Grenze / 4x</label>
+                <div class="ci-input-group ci-metric-input">
+                  <input value="-1,0" aria-label="Peak-Grenze">
+                  <span class="ci-input-unit">dB</span>
+                </div>
+              </div>
+            </div>
+
+            <button class="ci-button ci-button-primary ci-button-block" type="button">5.1 erstellen</button>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

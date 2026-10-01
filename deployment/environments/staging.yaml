@@ -1,0 +1,51 @@
+environment: staging
+app: stundenplaninfo
+app_slug: webuntis
+server_project: AzureHosting
+hostname: webuntis-dev.miloapps.net
+public_url: https://webuntis-dev.miloapps.net
+azure_origin: azurehosting-web01.swedencentral.cloudapp.azure.com
+
+runtime:
+  app_name: webuntis-dev
+  app_root: /srv/apps/webuntis-dev/app
+  service_name: webuntis-dev
+  service_user: stundenplan
+  bind_host: 127.0.0.1
+  bind_port: 8010
+
+caddy:
+  file: /etc/caddy/apps/webuntis-dev.caddy
+  reverse_proxy: 127.0.0.1:8010
+
+dns:
+  provider: Cloudflare
+  zone: miloapps.net
+  record:
+    type: CNAME
+    name: webuntis-dev
+    target: azurehosting-web01.swedencentral.cloudapp.azure.com
+    proxy_status_initial: DNS only
+    ttl: Auto
+
+env:
+  APP_HOST: 127.0.0.1
+  APP_PORT: 8010
+  POLL_INTERVAL_MINUTES: 15
+  TRANSIT_POLL_INTERVAL_MINUTES: 2
+  PUBLIC_TIMETABLE_URL: https://webuntis-dev.miloapps.net
+  ALLOWED_HOSTS: webuntis-dev.miloapps.net
+  MILO_AUTH_REQUIRED: "1"
+  MILO_OIDC_ISSUER: staging-authentik-issuer
+  MILO_OIDC_CLIENT_ID: staging-client-id
+  MILO_OIDC_REDIRECT_URI: https://webuntis-dev.miloapps.net/auth/callback
+  MILO_OIDC_ADMIN_GROUP: milo-admins
+  MILO_OIDC_USER_GROUP: milo-webuntis-users
+  MILO_COOKIE_SECURE: "1"
+  MILO_IDLE_TIMEOUT_MINUTES: "30"
+  EMAIL_TO: staging/test recipients only
+
+secrets_policy:
+  - Do not commit .env files.
+  - Keep WebUntis key, Geofox password, SMTP password, OIDC client secret, session secret and parent accounts only in server/local secrets.
+  - Use separate staging accounts and test recipients before production deployment.

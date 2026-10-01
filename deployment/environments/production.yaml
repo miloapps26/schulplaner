@@ -1,0 +1,52 @@
+environment: production
+app: stundenplaninfo
+app_slug: webuntis
+server_project: AzureHosting
+hostname: webuntis.miloapps.net
+public_url: https://webuntis.miloapps.net
+azure_origin: azurehosting-web01.swedencentral.cloudapp.azure.com
+
+runtime:
+  app_name: webuntis
+  app_root: /srv/apps/webuntis/app
+  service_name: webuntis
+  service_user: stundenplan
+  bind_host: 127.0.0.1
+  bind_port: 8000
+
+caddy:
+  file: /etc/caddy/apps/webuntis.caddy
+  reverse_proxy: 127.0.0.1:8000
+
+dns:
+  provider: Cloudflare
+  zone: miloapps.net
+  record:
+    type: CNAME
+    name: webuntis
+    target: azurehosting-web01.swedencentral.cloudapp.azure.com
+    proxy_status_initial: DNS only
+    ttl: Auto
+
+env:
+  APP_HOST: 127.0.0.1
+  APP_PORT: 8000
+  POLL_INTERVAL_MINUTES: 15
+  TRANSIT_POLL_INTERVAL_MINUTES: 2
+  PUBLIC_TIMETABLE_URL: https://webuntis.miloapps.net
+  ALLOWED_HOSTS: webuntis.miloapps.net
+  MILO_AUTH_REQUIRED: "1"
+  MILO_OIDC_ISSUER: production-authentik-issuer
+  MILO_OIDC_CLIENT_ID: production-client-id
+  MILO_OIDC_REDIRECT_URI: https://webuntis.miloapps.net/auth/callback
+  MILO_OIDC_ADMIN_GROUP: milo-admins
+  MILO_OIDC_USER_GROUP: milo-webuntis-users
+  MILO_COOKIE_SECURE: "1"
+  MILO_IDLE_TIMEOUT_MINUTES: "30"
+  EMAIL_TO: production recipients
+
+secrets_policy:
+  - Do not commit .env files.
+  - Use a production Authentik application, client secret and session secret separate from staging.
+  - Keep WebUntis key, Geofox password, SMTP password, OIDC client secret, session secret and parent accounts only in server/local secrets.
+  - Production is deployed only after explicit staging approval.

@@ -1,0 +1,189 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo CI Prozess-Stabilitaet</title>
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./ci.css">
+  <link rel="icon" href="./assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="./assets/favicon.ico?v=1.4.0">
+</head>
+<body>
+  <div class="ci-app">
+    <header class="ci-topbar">
+      <div class="ci-brand">
+        <span class="ci-mark" aria-hidden="true"><img class="ci-mark-img" src="./assets/milo-mark.svg" alt=""></span>
+        <div>
+          <h1 class="ci-brand-title">Still Frame</h1>
+          <p class="ci-brand-subtitle">Motion Tools</p>
+        </div>
+      </div>
+      <div class="ci-topbar-meta">
+        <div class="ci-status" id="top-status">Ready</div>
+        <div class="ci-version">v0.4.0</div>
+      </div>
+    </header>
+
+    <main class="ci-main">
+      <section class="ci-workspace ci-process" aria-labelledby="demo-title">
+        <div class="ci-process-bar" data-stability="nav">
+          <div class="ci-process-steps" aria-label="Prozessschritte">
+            <button class="ci-process-step" type="button" data-state-button="short" aria-current="step">Brief</button>
+            <button class="ci-process-step" type="button" data-state-button="long">Langtext</button>
+            <button class="ci-process-step" type="button" data-state-button="suggestion">Vorschlag</button>
+            <button class="ci-process-step" type="button" data-state-button="loading">Laden</button>
+            <button class="ci-process-step" type="button" data-state-button="error">Fehler</button>
+            <button class="ci-process-step" type="button" data-state-button="result">Ergebnis</button>
+          </div>
+          <div class="ci-process-nav">
+            <button class="ci-icon-button" type="button" aria-label="Zurueck" title="Zurueck" data-prev>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            </button>
+            <button class="ci-icon-button" type="button" aria-label="Weiter" title="Weiter" data-next>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="ci-process-stage" data-stability="stage">
+          <div class="ci-toolbar">
+            <div>
+              <p class="ci-section-kicker">STABILITAET</p>
+              <h2 class="ci-h1" id="demo-title">Prozess ohne Layoutsprung</h2>
+            </div>
+            <span class="ci-badge" id="phase-badge">Brief</span>
+          </div>
+
+          <div class="ci-media-workbench">
+            <section class="ci-preview-pane" aria-label="Vorschau">
+              <div class="ci-preview-frame" data-stability="preview">
+                <div class="ci-preview-placeholder" id="preview-copy">Referenz bleibt sichtbar.</div>
+              </div>
+              <div class="ci-status-panel" id="status-panel" data-state="idle" role="status" aria-live="polite" data-stability="status">
+                <span id="status-copy">Bereit zur Auswahl.</span>
+                <div class="ci-progress" id="progress" hidden><span></span></div>
+              </div>
+            </section>
+
+            <section class="ci-settings-pane" aria-label="Einstellungen">
+              <div class="ci-field">
+                <label class="ci-label" for="mode">Modus <span class="ci-label-value">stabil</span></label>
+                <div class="ci-segmented" id="mode">
+                  <button type="button" aria-pressed="true">Frame</button>
+                  <button type="button" aria-pressed="false">Sequence</button>
+                </div>
+              </div>
+
+              <div class="ci-ai-field">
+                <label class="ci-label" for="prompt">Prompt</label>
+                <div class="ci-ai-control">
+                  <textarea class="ci-ai-input" id="prompt">Erstelle einen klaren, ruhigen Still Frame aus der Bewegung.</textarea>
+                  <button class="ci-ai-action" type="button" title="KI-Vorschlag erstellen" aria-label="KI-Vorschlag erstellen" data-suggest>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9.9 4.2 8.7 7.4 5.5 8.6l3.2 1.2 1.2 3.2 1.2-3.2 3.2-1.2-3.2-1.2z"></path><path d="M17.5 11.5 16.7 14l-2.5.8 2.5.8.8 2.5.8-2.5 2.5-.8-2.5-.8z"></path></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="ci-suggestion" id="suggestion" data-stability="suggestion">
+                Noch kein Vorschlag. Dieser Bereich bleibt reserviert, damit das Layout beim Einblenden nicht springt.
+              </div>
+
+              <div class="ci-step-body" id="step-body" data-stability="body">
+                <p class="ci-small">Kurzer Schritt: Auswahl treffen, Motiv bleibt links sichtbar.</p>
+              </div>
+
+              <button class="ci-button ci-button-primary ci-button-block" type="button" id="run-button">Still Frame erstellen</button>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const states = ['short', 'long', 'suggestion', 'loading', 'error', 'result'];
+    let index = 0;
+    const buttons = Array.from(document.querySelectorAll('[data-state-button]'));
+    const badge = document.getElementById('phase-badge');
+    const preview = document.getElementById('preview-copy');
+    const statusPanel = document.getElementById('status-panel');
+    const statusCopy = document.getElementById('status-copy');
+    const progress = document.getElementById('progress');
+    const suggestion = document.getElementById('suggestion');
+    const stepBody = document.getElementById('step-body');
+    const runButton = document.getElementById('run-button');
+    const topStatus = document.getElementById('top-status');
+
+    function paragraph(n) {
+      return Array.from({ length: n }, (_, i) => `<p class="ci-small">Langer Inhalt ${i + 1}: Dieser Text prueft, dass lange Beschreibungen im vorgesehenen Bereich scrollen und weder Navigation noch Vorschau verschieben.</p>`).join('');
+    }
+
+    function render(state) {
+      index = states.indexOf(state);
+      buttons.forEach((button) => button.setAttribute('aria-current', button.dataset.stateButton === state ? 'step' : 'false'));
+      progress.hidden = true;
+      progress.removeAttribute('aria-busy');
+      runButton.disabled = false;
+      statusPanel.dataset.state = 'idle';
+      statusPanel.setAttribute('aria-live', 'polite');
+      badge.textContent = state;
+      topStatus.textContent = 'Ready';
+
+      if (state === 'short') {
+        preview.textContent = 'Referenz bleibt sichtbar.';
+        statusCopy.textContent = 'Bereit zur Auswahl.';
+        suggestion.textContent = 'Noch kein Vorschlag. Dieser Bereich bleibt reserviert, damit das Layout beim Einblenden nicht springt.';
+        stepBody.innerHTML = '<p class="ci-small">Kurzer Schritt: Auswahl treffen, Motiv bleibt links sichtbar.</p>';
+      }
+      if (state === 'long') {
+        preview.textContent = 'Referenz bleibt sichtbar.';
+        statusCopy.textContent = 'Langer Text ist im Inhaltsbereich scrollbar.';
+        suggestion.textContent = 'Reservierter Vorschlagsbereich bleibt gleich gross.';
+        stepBody.innerHTML = paragraph(16);
+      }
+      if (state === 'suggestion') {
+        preview.textContent = 'Referenz bleibt sichtbar.';
+        statusCopy.textContent = 'KI-Vorschlag bereit, aber noch nicht uebernommen.';
+        suggestion.innerHTML = '<strong>Vorschlag</strong><p class="ci-small">Betone ruhige Konturen, reduziere Bewegungsartefakte und behalte den dokumentarischen Look.</p><div class="ci-suggestion-actions"><button class="ci-button ci-button-primary" type="button">Uebernehmen</button></div>';
+        stepBody.innerHTML = '<p class="ci-small">Bestehender Prompt bleibt erhalten, bis der Vorschlag bewusst uebernommen wird.</p>';
+      }
+      if (state === 'loading') {
+        preview.textContent = 'Referenz bleibt sichtbar waehrend der Verarbeitung.';
+        statusPanel.dataset.state = 'running';
+        statusCopy.textContent = 'Wird erstellt...';
+        progress.hidden = false;
+        progress.setAttribute('aria-busy', 'true');
+        runButton.disabled = true;
+        topStatus.textContent = 'Running';
+        suggestion.textContent = 'Vorschlagsplatz bleibt erhalten.';
+        stepBody.innerHTML = '<p class="ci-small">Laden ersetzt nicht die gesamte Arbeitsflaeche.</p>';
+      }
+      if (state === 'error') {
+        preview.textContent = 'Referenz und Eingaben bleiben sichtbar.';
+        statusPanel.dataset.state = 'error';
+        statusPanel.setAttribute('aria-live', 'assertive');
+        statusCopy.textContent = 'Fehlgeschlagen: Quelle konnte nicht validiert werden.';
+        topStatus.textContent = 'Warning';
+        suggestion.textContent = 'Fehler loeschen keine Vorschlaege oder Eingaben.';
+        stepBody.innerHTML = paragraph(8);
+      }
+      if (state === 'result') {
+        preview.innerHTML = '<div class="ci-preview-result">Ergebnis ersetzt die Referenz im selben Vorschauplatz.</div>';
+        statusPanel.dataset.state = 'complete';
+        statusCopy.textContent = 'Abgeschlossen.';
+        topStatus.textContent = 'Done';
+        suggestion.textContent = 'Ergebnis bereit. Die Vorschauabmessungen bleiben stabil.';
+        stepBody.innerHTML = '<p class="ci-small">Der Ergebniszustand nutzt dieselbe Arbeitsflaeche.</p>';
+      }
+    }
+
+    buttons.forEach((button) => button.addEventListener('click', () => render(button.dataset.stateButton)));
+    document.querySelector('[data-prev]').addEventListener('click', () => render(states[Math.max(0, index - 1)]));
+    document.querySelector('[data-next]').addEventListener('click', () => render(states[Math.min(states.length - 1, index + 1)]));
+    document.querySelector('[data-suggest]').addEventListener('click', () => render('suggestion'));
+    render('short');
+  </script>
+</body>
+</html>

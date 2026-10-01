@@ -1,0 +1,125 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo Controls Consistency</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="ci.css">
+  <link rel="icon" href="assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="assets/favicon.ico?v=1.4.0">
+</head>
+<body>
+  <div class="ci-app">
+    <header class="ci-topbar">
+      <div class="ci-brand">
+        <div class="ci-mark" aria-hidden="true">
+          <img class="ci-mark-img" src="assets/milo-mark.svg" alt="">
+        </div>
+        <div>
+          <h1 class="ci-brand-title">Controls</h1>
+          <p class="ci-brand-subtitle">CI Reference</p>
+        </div>
+      </div>
+      <div class="ci-topbar-meta">
+        <div class="ci-status">Ready</div>
+        <div class="ci-version">v1.3.2</div>
+        <button class="ci-logout-button" type="button" aria-label="Logout">
+          <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <nav class="ci-tabs ci-tabs-compact" aria-label="Referenzen">
+      <button class="ci-tab" type="button" aria-selected="true">
+        <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/></svg>
+        Controls
+      </button>
+      <button class="ci-tab" type="button" aria-selected="false">
+        <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20v-6"/><path d="M6 20V10"/><path d="M18 20V4"/></svg>
+        States
+      </button>
+    </nav>
+
+    <main class="ci-main">
+      <section class="ci-workspace ci-process">
+        <div class="ci-process-bar">
+          <div class="ci-process-steps" aria-label="Prozess">
+            <span class="ci-process-step" aria-current="step">Analyze</span>
+            <span class="ci-process-step">Review</span>
+            <span class="ci-process-step">Export</span>
+          </div>
+          <div class="ci-process-nav">
+            <button class="ci-icon-button" type="button" aria-label="Zurueck">
+              <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="ci-button" type="button">Weiter</button>
+          </div>
+        </div>
+
+        <div class="ci-control-specimen-grid">
+          <section class="ci-panel">
+            <p class="ci-section-kicker">Inputs</p>
+            <div class="ci-stack">
+              <label class="ci-field">
+                <span class="ci-label">Textfeld</span>
+                <input class="ci-input" value="Motion Still Frame" aria-label="Textfeld">
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Auswahl</span>
+                <select class="ci-input" aria-label="Auswahl"><option>Praezise</option><option>Schnell</option></select>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Eingabegruppe</span>
+                <div class="ci-input-group ci-metric-input"><input value="82,0" aria-label="Zielwert"><span class="ci-input-unit">dB</span></div>
+              </label>
+            </div>
+          </section>
+
+          <section class="ci-panel">
+            <p class="ci-section-kicker">Buttons</p>
+            <div class="ci-stack">
+              <div class="ci-button-row">
+                <button class="ci-button ci-button-primary" type="button">Start</button>
+                <button class="ci-button" type="button">Sekundaer</button>
+                <button class="ci-button" type="button" disabled>Wartet</button>
+                <button class="ci-icon-button" type="button" aria-label="Aktualisieren">
+                  <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+                </button>
+              </div>
+              <button class="ci-button ci-button-primary ci-button-block" type="button">Export vorbereiten</button>
+              <div class="ci-segmented" role="group" aria-label="Modus">
+                <button type="button" aria-pressed="true">Woche</button>
+                <button type="button" aria-pressed="false">Tag</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="ci-panel">
+            <p class="ci-section-kicker">KI und Status</p>
+            <div class="ci-stack">
+              <div class="ci-ai-control">
+                <textarea class="ci-ai-input" aria-label="Prompt">Erzeuge einen ruhigen Ergebnisvorschlag mit klarer Quellenbindung.</textarea>
+                <button class="ci-ai-action" type="button" aria-label="Vorschlag erzeugen" title="Vorschlag erzeugen">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l1.7 5.1L19 10l-5.3 1.9L12 17l-1.7-5.1L5 10l5.3-1.9L12 3z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></svg>
+                </button>
+              </div>
+              <div class="ci-status-panel" data-state="running" role="status" aria-live="polite">
+                <span>Analysiert Eingabe</span>
+                <div class="ci-progress" aria-busy="true"><span></span></div>
+              </div>
+              <div class="ci-button-row">
+                <span class="ci-badge">Draft</span>
+                <span class="ci-badge" data-tone="success">Done</span>
+                <span class="ci-badge" data-tone="danger">Error</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

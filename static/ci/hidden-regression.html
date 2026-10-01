@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo CI Hidden Regression</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="ci.css">
+  <link rel="icon" href="assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="assets/favicon.ico?v=1.4.0">
+</head>
+<body>
+  <div class="ci-app">
+    <header class="ci-topbar">
+      <div class="ci-brand">
+        <span class="ci-mark" aria-hidden="true"><img class="ci-mark-img" src="assets/milo-mark.svg" alt=""></span>
+        <div>
+          <h1 class="ci-brand-title">CI</h1>
+          <p class="ci-brand-subtitle">Hidden Regression</p>
+        </div>
+      </div>
+      <div class="ci-topbar-meta">
+        <div class="ci-status">Lokal</div>
+        <div class="ci-version">v1.3.1</div>
+      </div>
+    </header>
+
+    <main class="ci-main">
+      <section class="ci-panel">
+        <p class="ci-kicker">REGRESSION</p>
+        <h2 class="ci-panel-title">Native hidden wins</h2>
+        <p class="ci-text-muted">Diese Demo prueft, dass Komponenten mit eigenem display nicht sichtbar werden, wenn das native HTML-Attribut hidden gesetzt ist.</p>
+
+        <div class="ci-workspace" hidden data-hidden-case="ci-workspace">
+          <aside class="ci-sidebar">Soll unsichtbar bleiben</aside>
+          <section class="ci-panel">Soll unsichtbar bleiben</section>
+        </div>
+
+        <nav class="ci-tabs" hidden data-hidden-case="ci-tabs" aria-label="Soll unsichtbar bleiben">
+          <button class="ci-tab is-active" type="button">Tab</button>
+          <button class="ci-tab" type="button">Tab</button>
+        </nav>
+
+        <button class="ci-button ci-button-primary" type="button" hidden data-hidden-case="ci-button">Soll unsichtbar bleiben</button>
+
+        <details class="ci-activity" hidden data-hidden-case="ci-activity">
+          <summary>Aktivitaet</summary>
+          <pre class="ci-console">Soll unsichtbar bleiben</pre>
+        </details>
+
+        <div class="ci-grid ci-grid-2">
+          <article class="ci-card">
+            <p class="ci-kicker">SICHTBAR</p>
+            <h3 class="ci-card-title">Kontrollkomponente</h3>
+            <p class="ci-text-muted">Diese Karte bleibt sichtbar und stellt sicher, dass normale Komponenten optisch unveraendert bleiben.</p>
+          </article>
+          <article class="ci-card">
+            <p class="ci-kicker">ERGEBNIS</p>
+            <h3 class="ci-card-title" id="result-title">Pruefung laeuft</h3>
+            <p class="ci-text-muted" id="result-detail">Computed styles werden im Browser ausgewertet.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const cases = Array.from(document.querySelectorAll('[data-hidden-case]'));
+    const failing = cases.filter((element) => getComputedStyle(element).display !== 'none');
+    const title = document.getElementById('result-title');
+    const detail = document.getElementById('result-detail');
+
+    if (failing.length === 0) {
+      title.textContent = 'Bestanden';
+      detail.textContent = 'Alle hidden-Komponenten haben display: none.';
+    } else {
+      title.textContent = 'Fehlgeschlagen';
+      detail.textContent = failing.map((element) => element.dataset.hiddenCase).join(', ');
+      document.body.dataset.hiddenRegression = 'failed';
+    }
+  </script>
+</body>
+</html>

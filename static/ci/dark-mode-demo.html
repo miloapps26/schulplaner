@@ -1,0 +1,127 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo CI Dark Mode</title>
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./ci.css">
+  <link rel="icon" href="./assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="./assets/favicon.ico?v=1.4.0">
+</head>
+<body>
+  <div class="ci-app">
+    <header class="ci-topbar">
+      <div class="ci-brand">
+        <span class="ci-mark" aria-hidden="true"><img class="ci-mark-img" src="./assets/milo-mark.svg" alt=""></span>
+        <div>
+          <h1 class="ci-brand-title">Command Desk</h1>
+          <p class="ci-brand-subtitle">Night Workbench</p>
+        </div>
+      </div>
+      <div class="ci-topbar-meta">
+        <div class="ci-status">Running</div>
+        <div class="ci-version">v0.8.0</div>
+        <button class="ci-logout-button" type="button">Logout</button>
+      </div>
+    </header>
+
+    <nav class="ci-tabs" aria-label="Bereiche">
+      <button class="ci-tab" type="button" aria-selected="true">
+        <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19h16"></path><path d="M7 16V8"></path><path d="M12 16V4"></path><path d="M17 16v-6"></path></svg>
+        Overview
+      </button>
+      <button class="ci-tab" type="button">
+        <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg>
+        Analysis
+      </button>
+      <button class="ci-tab" type="button">
+        <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>
+        Runs
+      </button>
+    </nav>
+
+    <main class="ci-main">
+      <section class="ci-workspace ci-process">
+        <div class="ci-process-bar">
+          <div class="ci-process-steps">
+            <span class="ci-process-step" aria-current="step">Import</span>
+            <span class="ci-process-step">Analyze</span>
+            <span class="ci-process-step">Export</span>
+          </div>
+          <div class="ci-process-nav">
+            <button class="ci-icon-button" type="button" aria-label="Zurueck" title="Zurueck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+            <button class="ci-icon-button" type="button" aria-label="Weiter" title="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+          </div>
+        </div>
+
+        <div class="ci-process-stage">
+          <div class="ci-toolbar">
+            <div>
+              <p class="ci-section-kicker">DARK MODE</p>
+              <h2 class="ci-h1">Milo Night Workbench</h2>
+            </div>
+            <span class="ci-badge" data-tone="success">Model ready</span>
+          </div>
+
+          <div class="ci-media-workbench">
+            <section class="ci-preview-pane" aria-label="Vorschau">
+              <div class="ci-preview-frame">
+                <svg viewBox="0 0 640 400" role="img" aria-label="Dunkle Vorschau mit Analysekurve">
+                  <rect width="640" height="400" fill="#111827"></rect>
+                  <path d="M70 284 C130 210 180 300 240 220 S360 160 430 220 520 260 580 126" fill="none" stroke="#2dd4bf" stroke-width="10" stroke-linecap="round"></path>
+                  <path d="M70 318 H580" stroke="#2b3642" stroke-width="2"></path>
+                  <path d="M120 80 H520" stroke="#2b3642" stroke-width="2"></path>
+                  <circle cx="430" cy="220" r="18" fill="#60a5fa"></circle>
+                </svg>
+              </div>
+              <div class="ci-status-panel" data-state="running" role="status" aria-live="polite">
+                <span>Wird analysiert...</span>
+                <div class="ci-progress" aria-busy="true"><span></span></div>
+              </div>
+            </section>
+
+            <section class="ci-settings-pane" aria-label="Einstellungen">
+              <div class="ci-field">
+                <label class="ci-label">Verfahren <span class="ci-label-value">stabil</span></label>
+                <div class="ci-segmented">
+                  <button type="button" aria-pressed="true">Praezise</button>
+                  <button type="button">Schnell</button>
+                </div>
+              </div>
+
+              <div class="ci-ai-field">
+                <label class="ci-label" for="dark-prompt">KI-Hilfe</label>
+                <div class="ci-ai-control">
+                  <textarea class="ci-ai-input" id="dark-prompt">Fasse die wichtigsten Auffaelligkeiten zusammen und priorisiere echte Warnungen.</textarea>
+                  <button class="ci-ai-action" type="button" title="KI-Vorschlag erstellen" aria-label="KI-Vorschlag erstellen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9.9 4.2 8.7 7.4 5.5 8.6l3.2 1.2 1.2 3.2 1.2-3.2 3.2-1.2-3.2-1.2z"></path><path d="M17.5 11.5 16.7 14l-2.5.8 2.5.8.8 2.5.8-2.5 2.5-.8-2.5-.8z"></path></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="ci-suggestion">
+                Vorschlaege erscheinen hier, ohne den Prompt zu ueberdecken oder die Arbeitsflaeche zu verschieben.
+              </div>
+
+              <div class="ci-input-grid">
+                <div class="ci-field">
+                  <label class="ci-label">Zielwert</label>
+                  <div class="ci-input-group ci-metric-input"><input value="82,0" aria-label="Zielwert"><span class="ci-input-unit">dB</span></div>
+                </div>
+                <div class="ci-field">
+                  <label class="ci-label">Toleranz</label>
+                  <div class="ci-input-group ci-metric-input"><input value="0,5" aria-label="Toleranz"><span class="ci-input-unit">dB</span></div>
+                </div>
+              </div>
+
+              <button class="ci-button ci-button-primary ci-button-block" type="button">Analyse starten</button>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

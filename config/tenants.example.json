@@ -1,0 +1,86 @@
+{
+  "tenants": [
+    {
+      "id": "tenant_q7k4m2x9",
+      "name": "Profil 1",
+      "public_id": "view_p8w4n6r2k9s5",
+      "active": true,
+      "data_dir": "data/tenants/tenant_q7k4m2x9",
+      "parent_email": "eltern@example.com",
+      "public_timetable_url": "https://webuntis.miloapps.net/app",
+      "display": {
+        "student_first_name": "Max",
+        "student_last_name": "Mustermann",
+        "school": "Herderschule Lüneburg",
+        "class": "5D"
+      },
+      "webuntis": {
+        "server": "herderschule-lueneburg.webuntis.com",
+        "school": "herderschule-lueneburg",
+        "username": "",
+        "password": "",
+        "app_secret": "",
+        "school_number": "2340000",
+        "element_type": 5,
+        "element_id": 6817,
+        "class_name": ""
+      },
+      "email": {
+        "recipients": "eltern@example.com"
+      },
+      "transit": {
+        "outbound_origins": "Wittorf, Birkenweg",
+        "outbound_destinations": "Lüneburg, Herderschule\nLüneburg, Witzendorffstraße",
+        "return_origins": "Lüneburg, Herderschule\nLüneburg, Witzendorffstraße",
+        "return_destinations": "Wittorf, Birkenweg",
+        "arrive_min_before": 10,
+        "arrive_window_minutes": 60,
+        "depart_min_after": 5,
+        "depart_window_minutes": 90,
+        "day_start": "05:00",
+        "day_end": "20:00"
+      }
+    },
+    {
+      "id": "tenant_b3c8h1z6",
+      "name": "Profil 2",
+      "public_id": "view_m4z8c2v7n1q6",
+      "active": true,
+      "data_dir": "data/tenants/tenant_b3c8h1z6",
+      "parent_email": "",
+      "public_timetable_url": "https://webuntis.miloapps.net/app",
+      "display": {
+        "student_first_name": "",
+        "student_last_name": "",
+        "school": "",
+        "class": ""
+      },
+      "webuntis": {
+        "server": "example.webuntis.com",
+        "school": "example-school",
+        "username": "",
+        "password": "",
+        "app_secret": "",
+        "school_number": "",
+        "element_type": 5,
+        "element_id": null,
+        "class_name": ""
+      },
+      "email": {
+        "recipients": ""
+      },
+      "transit": {
+        "outbound_origins": "",
+        "outbound_destinations": "",
+        "return_origins": "",
+        "return_destinations": "",
+        "arrive_min_before": 10,
+        "arrive_window_minutes": 60,
+        "depart_min_after": 5,
+        "depart_window_minutes": 90,
+        "day_start": "05:00",
+        "day_end": "20:00"
+      }
+    }
+  ]
+}

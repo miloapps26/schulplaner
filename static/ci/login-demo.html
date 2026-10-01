@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo Login Demo</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="ci.css">
+  <link rel="icon" href="assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="assets/favicon.ico?v=1.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0f141a">
+  <meta name="apple-mobile-web-app-title" content="Animation">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+  <main class="ci-login-page">
+    <div>
+      <section class="ci-login-card" aria-labelledby="login-title">
+        <div class="ci-mark" aria-hidden="true">
+          <img class="ci-mark-img" src="assets/milo-mark.svg" alt="">
+        </div>
+        <div>
+          <p class="ci-section-kicker">ZUGANG</p>
+          <h1 class="ci-login-title" id="login-title">Anmelden</h1>
+        </div>
+        <p class="ci-login-copy">Sitzung wegen Inaktivitaet beendet.</p>
+        <form class="ci-login-form">
+          <label class="ci-field">
+            <span class="ci-label">Benutzername</span>
+            <input class="ci-input" autocomplete="username" aria-label="Benutzername">
+          </label>
+          <label class="ci-field">
+            <span class="ci-label">Passwort</span>
+            <input class="ci-input" type="password" autocomplete="current-password" aria-label="Passwort">
+          </label>
+          <div class="ci-login-actions">
+            <button class="ci-button ci-button-primary ci-button-block" type="submit">Anmelden</button>
+          </div>
+        </form>
+      </section>
+      <nav class="ci-login-footer" aria-label="Umgebung">
+        <span>Plattformverwaltung</span>
+        <span>Betriebsverwaltung</span>
+        <strong>Gaesteshop</strong>
+      </nav>
+    </div>
+  </main>
+</body>
+</html>

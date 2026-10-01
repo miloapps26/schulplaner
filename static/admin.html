@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Schulplaner Admin</title>
+    <link rel="icon" href="/static/ci/assets/favicon.svg?v=1.5.0" type="image/svg+xml">
+    <link rel="icon" href="/static/ci/assets/favicon-32.png?v=1.5.0" sizes="32x32" type="image/png">
+    <link rel="shortcut icon" href="/static/ci/assets/favicon.ico?v=1.5.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/ci/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#0f141a">
+    <link rel="stylesheet" href="/static/ci/tokens.css">
+    <link rel="stylesheet" href="/static/ci/ci.css">
+    <link rel="stylesheet" href="/static/app.css">
+  </head>
+  <body>
+    <div class="ci-app">
+      <header class="ci-topbar">
+        <div class="ci-brand">
+          <div class="ci-mark" aria-hidden="true">
+            <img class="ci-mark-img" src="/static/ci/assets/milo-mark.svg" alt="">
+          </div>
+          <div>
+            <h1 class="ci-brand-title">Schulplaner</h1>
+            <p class="ci-brand-subtitle">Admin</p>
+          </div>
+        </div>
+        <div class="ci-topbar-meta">
+          <div class="ci-status" id="top-status">Loading</div>
+          <div class="ci-version">v0.9.1</div>
+          <button class="ci-logout-button" id="logout-button" type="button">
+            <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <nav class="ci-tabs" aria-label="Admin-Bereiche">
+        <button class="ci-tab" type="button" data-tab="settings" aria-selected="true">
+          <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.35.1.7.3 1 .6.28.28.42.67.4 1.1V11a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.31 0Z"/></svg>
+          Einstellungen
+        </button>
+        <button class="ci-tab" type="button" data-tab="log" aria-selected="false">
+          <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 17l6-6 4 4 6-8"/><path d="M4 21h16"/></svg>
+          Log
+        </button>
+      </nav>
+
+      <main class="ci-main">
+        <section class="ci-workspace tab-view admin-settings-layout" data-view="settings">
+          <div>
+            <p class="ci-section-kicker">Einstellungen</p>
+            <h2 class="ci-h1">Automatische Prüfung</h2>
+
+            <div class="metric-grid" id="metrics"></div>
+
+            <div class="ci-panel tenant-panel">
+              <div class="ci-toolbar">
+                <label class="ci-field tenant-field">
+                  <span class="ci-label">Profil <span class="ci-label-value">Mandant</span></span>
+                  <select id="tenant-select" name="tenant_id"></select>
+                </label>
+                <div class="ci-toolbar-actions">
+                  <button class="ci-button secondary-button" id="tenant-new" type="button">Neu</button>
+                </div>
+              </div>
+
+              <form class="tenant-form" id="tenant-form">
+                <input id="tenant-id" type="hidden">
+                <div class="tenant-form-grid">
+                  <label class="ci-field">
+                    <span class="ci-label">Interner Name</span>
+                    <input id="tenant-name" type="text" maxlength="160" placeholder="z. B. Max">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Eltern-E-Mail</span>
+                    <input id="tenant-parent-email" type="email" maxlength="200" placeholder="eltern@example.com">
+                  </label>
+                  <label class="ci-field tenant-active-field">
+                    <span class="ci-label">Aktiv</span>
+                    <input id="tenant-active" type="checkbox" checked>
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Vorname</span>
+                    <input id="tenant-student-first-name" type="text" maxlength="120" placeholder="Max">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Nachname</span>
+                    <input id="tenant-student-last-initial" type="text" maxlength="120" placeholder="Mustermann">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Schule</span>
+                    <input id="tenant-school-label" type="text" maxlength="200" placeholder="Herderschule Lüneburg">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Klasse</span>
+                    <input id="tenant-class-label" type="text" maxlength="80" placeholder="5D">
+                  </label>
+                </div>
+
+                <div class="tenant-form-grid">
+                  <label class="ci-field">
+                    <span class="ci-label">WebUntis Server</span>
+                    <input id="tenant-webuntis-server" type="text" maxlength="300" placeholder="herderschule-lueneburg.webuntis.com">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Schulname</span>
+                    <input id="tenant-webuntis-school" type="text" maxlength="200" placeholder="herderschule-lueneburg">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Elementtyp</span>
+                    <input id="tenant-webuntis-element-type" type="number" min="1" max="5" value="5">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Element-ID <span class="ci-label-value">oder Klassenname</span></span>
+                    <input id="tenant-webuntis-element-id" type="number">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Klassenname <span class="ci-label-value">nur ohne Element-ID nötig</span></span>
+                    <input id="tenant-webuntis-class-name" type="text" maxlength="120">
+                  </label>
+                  <label class="ci-field">
+                    <span class="ci-label">Schulnummer</span>
+                    <input id="tenant-webuntis-school-number" type="text" maxlength="80" placeholder="z. B. 2340000">
+                  </label>
+                </div>
+
+                <label class="ci-field">
+                  <span class="ci-label">E-Mail-Empfänger <span class="ci-label-value">Komma getrennt</span></span>
+                  <textarea id="tenant-email-recipients" rows="3" placeholder="eltern@example.com"></textarea>
+                </label>
+
+                <div class="invite-result" id="tenant-invite-result" aria-live="polite"></div>
+
+                <div class="tenant-form-actions">
+                  <button class="ci-button settings-button" type="submit">Profil speichern</button>
+                  <button class="ci-button secondary-button" id="tenant-send-invite" type="button">Einladung senden</button>
+                  <span class="tenant-save-state" id="tenant-save-state"></span>
+                </div>
+              </form>
+            </div>
+
+            <div class="ci-panel">
+              <div class="ci-toolbar">
+                <div>
+                  <strong>Abfrage</strong>
+                  <p class="ci-small" id="poll-copy">-</p>
+                </div>
+                <div class="ci-toolbar-actions">
+                  <button class="ci-button action-button" id="check-now" type="button" title="Jetzt prüfen">
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+                    Jetzt prüfen
+                  </button>
+                </div>
+              </div>
+              <div id="last-result" class="notice-row"></div>
+            </div>
+
+            <div class="ci-panel">
+              <form class="settings-form" id="settings-form">
+                <label class="ci-field">
+                  <span class="ci-label">Stundenplan <span class="ci-label-value">Minuten</span></span>
+                  <span class="ci-input-group interval-input">
+                    <input id="poll-interval" name="poll_interval_minutes" type="number" min="1" max="1440" step="1">
+                    <span class="ci-input-unit">min</span>
+                  </span>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Busverbindungen <span class="ci-label-value">Minuten</span></span>
+                  <span class="ci-input-group interval-input">
+                    <input id="transit-poll-interval" name="transit_poll_interval_minutes" type="number" min="1" max="1440" step="1">
+                    <span class="ci-input-unit">min</span>
+                  </span>
+                </label>
+                <button class="ci-button settings-button" type="submit">Speichern</button>
+              </form>
+            </div>
+          </div>
+
+          <aside class="side-panel">
+            <p class="ci-section-kicker">Kanäle</p>
+            <div id="channels" class="ci-card-list"></div>
+          </aside>
+        </section>
+
+        <section class="tab-view" data-view="log" hidden>
+          <div class="ci-workspace activity-layout">
+            <div>
+              <p class="ci-section-kicker">Log</p>
+              <h2 class="ci-h1">Protokoll</h2>
+              <details class="ci-activity" open>
+                <summary>
+                  <span>Letzte Prüfungen</span>
+                  <span class="ci-badge" id="activity-count">0 runs</span>
+                </summary>
+                <pre class="ci-console" id="activity-log">Noch keine Läufe.</pre>
+              </details>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,661 @@
+{
+  "ciName": "Milo CI",
+  "ciVersion": "1.5.0",
+  "updatedAt": "2026-09-12",
+  "currentStyle": "Milo Night Workbench + Command Colors",
+  "brand": {
+    "name": "Milo",
+    "internalMeaning": "My Idea Lab Online",
+    "showInternalMeaningByDefault": false,
+    "uiNameRule": "Milo appears in the mark only; app UI titles use the descriptive tool name without a Milo text prefix."
+  },
+  "entrypoints": {
+    "tokens": "tokens.css",
+    "pdfRules": "PDF.md",
+    "pdfTokens": "pdf-tokens.json",
+    "dataViz": "DATA-VIS.md",
+    "components": "ci.css",
+    "brand": "BRAND.md",
+    "integration": "INTEGRATION.md",
+    "codexInstructions": "codex-ui-instructions.md",
+    "example": "example.html",
+    "mark": "assets/milo-mark.svg",
+    "favicon": "assets/favicon.svg",
+    "hiddenRegressionDemo": "hidden-regression.html",
+    "hiddenRegressionTest": "tests/hidden-attribute-regression.ps1",
+    "processUx": "PROCESS-UX.md",
+    "processStabilityDemo": "process-stability-demo.html",
+    "processStabilityTest": "tests/process-stability-playwright.js",
+    "darkMode": "DARK-MODE.md",
+    "darkModeDemo": "dark-mode-demo.html",
+    "darkModeTest": "tests/dark-mode-playwright.js",
+    "lightMark": "assets/milo-mark-light.svg",
+    "controls": "CONTROLS.md",
+    "controlsConsistencyDemo": "controls-consistency-demo.html",
+    "controlsConsistencyTest": "tests/controls-consistency-playwright.js",
+    "markConsistencyTest": "tests/milo-mark-consistency.ps1",
+    "generatedMarkAssets": "assets/milo/",
+    "generatedMarkAssetsTest": "tests/milo-generated-assets.ps1",
+    "login": "LOGIN.md",
+    "loginDemo": "login-demo.html",
+    "loginLayoutTest": "tests/login-layout-playwright.js",
+    "appleTouchIcon": "assets/apple-touch-icon.png",
+    "webAppManifest": "site.webmanifest",
+    "appIconAssetsTest": "tests/app-icon-assets.ps1",
+    "favicon16": "assets/favicon-16.png",
+    "favicon32": "assets/favicon-32.png",
+    "favicon48": "assets/favicon-48.png",
+    "faviconIco": "assets/favicon.ico",
+    "faviconConsistencyTest": "tests/favicon-consistency.ps1",
+    "workflowUx": "WORKFLOW-UX.md",
+    "workflowResilienceDemo": "workflow-resilience-demo.html",
+    "workflowResilienceTest": "tests/workflow-resilience-playwright.js",
+    "adoption": "ADOPTION.md",
+    "adoptionChecker": "tools/check-adoption.mjs",
+    "adoptionCheckerTest": "tests/adoption-checker-regression.js"
+  },
+  "requiredUiRules": [
+    {
+      "id": "pdf-ci",
+      "description": "PDF reports follow Milo CI, including product name, shared colors, typography, source, app version and page numbering. Render and visually verify representative pages.",
+      "reference": "PDF.md"
+    },
+    {
+      "id": "descriptive-export-filenames",
+      "description": "All exports, CLI/API outputs and archive members identify their source. Related artifacts share a meaningful basename with relevant processing parameters. Test actual download names.",
+      "reference": "PDF.md"
+    },
+    {
+      "id": "data-visualization-palette",
+      "description": "Charts, spectra, bars, lines and report graphics use the Milo chart palette instead of library default colors such as brown or generic green.",
+      "reference": "DATA-VIS.md",
+      "requiredTokens": [
+        "--milo-chart-1",
+        "--milo-chart-2",
+        "--milo-chart-3",
+        "--milo-chart-4",
+        "--milo-chart-5",
+        "--milo-chart-6",
+        "--milo-chart-7",
+        "--milo-chart-8",
+        "--milo-chart-muted",
+        "--milo-chart-grid",
+        "--milo-chart-axis",
+        "--milo-chart-warning",
+        "--milo-chart-danger"
+      ]
+    },
+    {
+      "id": "app-version-topbar",
+      "description": "Every Milo app shows its own version in the topbar, right side, next to status.",
+      "requiredClasses": [
+        "ci-topbar-meta",
+        "ci-status",
+        "ci-version"
+      ],
+      "example": "<div class=\"ci-topbar-meta\"><div class=\"ci-status\">Ready</div><div class=\"ci-version\">v1.0.1</div></div>"
+    },
+    {
+      "id": "activity-not-dominant",
+      "description": "Command-line style activity output is hidden by default, collapsible, or placed in its own Activity/Runs/Logs tab.",
+      "requiredClasses": [
+        "ci-activity",
+        "ci-console"
+      ]
+    },
+    {
+      "id": "milo-branding",
+      "description": "Use the Milo mark as the visible product-family signal. App UI titles use descriptive tool names without a Milo text prefix.",
+      "example": "LEQ"
+    },
+    {
+      "id": "selected-buttons-teal",
+      "description": "Selected segmented or toggle-style buttons use Milo teal instead of the dark ink/topbar color.",
+      "requiredTokens": [
+        "--milo-selected-bg",
+        "--milo-selected-text"
+      ],
+      "example": "background: var(--milo-selected-bg); color: var(--milo-selected-text);"
+    },
+    {
+      "id": "auth-logout-and-idle-timeout",
+      "description": "Every Milo app with authentication has a visible topbar logout button and automatically logs out inactive users.",
+      "requiredClasses": [
+        "ci-logout-button"
+      ],
+      "defaults": {
+        "idleLogoutMinutes": 30
+      },
+      "example": "<button class=\"ci-logout-button\" type=\"button\">Logout</button>"
+    },
+    {
+      "id": "deployment-isolation",
+      "description": "Downstream projects use Milo CI as source-of-truth guidance, but production builds must not depend on the local Milo CI project folder.",
+      "requiredPractice": "Copy or vendor required CI files and assets into the downstream project before build or deployment.",
+      "localOnlyPaths": [
+        "../Milo CI/tokens.css",
+        "../Milo CI/ci.css",
+        "../Milo CI/assets/*"
+      ]
+    },
+    {
+      "id": "native-hidden-wins",
+      "description": "Native HTML hidden must always keep elements invisible, even when ci-* component classes define display: flex, grid, block or inline-flex.",
+      "requiredSelector": "[hidden]",
+      "requiredDeclaration": "display: none !important;",
+      "regression": "hidden-regression.html and tests/hidden-attribute-regression.ps1"
+    },
+    {
+      "id": "milo-wordmark-in-mark",
+      "description": "The official Milo mark includes the small robot plus a visible Milo wordmark below it. Do not duplicate Milo as a text prefix in the topbar title.",
+      "requiredAsset": "assets/milo-mark.svg",
+      "uiTitleExample": "LEQ"
+    },
+    {
+      "id": "stable-process-layout",
+      "description": "Process steps must share a stable workspace, top process navigation, reserved dynamic regions, responsive minimum sizes and no automatic scroll jumps on normal selection changes.",
+      "requiredClasses": [
+        "ci-process",
+        "ci-process-bar",
+        "ci-process-stage",
+        "ci-process-nav",
+        "ci-step-body",
+        "ci-reserved-region"
+      ],
+      "reference": "PROCESS-UX.md"
+    },
+    {
+      "id": "persistent-subject-reference",
+      "description": "Image, video, audio and document tools keep the subject reference visible in a stable preview frame; finished output replaces the reference in the same slot.",
+      "requiredClasses": [
+        "ci-media-workbench",
+        "ci-preview-pane",
+        "ci-preview-frame",
+        "ci-settings-pane"
+      ],
+      "reference": "PROCESS-UX.md"
+    },
+    {
+      "id": "unified-processing-states",
+      "description": "Loading, analyzing, creating, checking, complete and error states are integrated into the existing layout; inputs/results remain on error and duplicate jobs are prevented.",
+      "requiredClasses": [
+        "ci-status-panel",
+        "ci-progress"
+      ],
+      "accessibility": [
+        "role=status",
+        "aria-live",
+        "aria-busy for indeterminate progress"
+      ],
+      "reference": "PROCESS-UX.md"
+    },
+    {
+      "id": "recognizable-ai-actions",
+      "description": "AI actions use a recognizable Sparkles or magic-wand icon, tooltip, accessible label, stable dimensions and non-destructive suggestion adoption.",
+      "requiredClasses": [
+        "ci-ai-field",
+        "ci-ai-control",
+        "ci-ai-action",
+        "ci-suggestion"
+      ],
+      "reference": "PROCESS-UX.md"
+    },
+    {
+      "id": "dark-mode-default",
+      "description": "Dark Mode is the Milo UI default as Milo Night Workbench. Light Mode is available only as an intentional opt-in via data-ci-theme=\"light\". Both modes use the same ci-* components and central tokens.",
+      "requiredAttribute": "none for dark default; data-ci-theme=\"light\" for opt-in light mode",
+      "reference": "DARK-MODE.md",
+      "demo": "dark-mode-demo.html",
+      "test": "tests/dark-mode-playwright.js"
+    },
+    {
+      "id": "dark-optimized-milo-mark",
+      "description": "The standard Milo mark keeps the original dark Milo figure on a white tile for the default Night Workbench. Use assets/milo-mark-light.svg for explicit light contexts.",
+      "standardAsset": "assets/milo-mark.svg",
+      "lightAsset": "assets/milo-mark-light.svg"
+    },
+    {
+      "id": "unified-controls",
+      "description": "Buttons, inputs, selects, textareas, segmented controls, icon buttons, AI actions and process steps use shared Milo control tokens for height, radius, padding, gap, borders and states.",
+      "requiredTokens": [
+        "--milo-control-height-sm",
+        "--milo-control-height",
+        "--milo-control-height-lg",
+        "--milo-control-radius",
+        "--milo-container-radius",
+        "--milo-pill-radius",
+        "--milo-control-border-width",
+        "--milo-control-padding-x",
+        "--milo-control-gap"
+      ],
+      "requiredClasses": [
+        "ci-button",
+        "ci-button-primary",
+        "ci-button-secondary",
+        "ci-button-block",
+        "ci-icon-button",
+        "ci-control",
+        "ci-input",
+        "ci-input-group",
+        "ci-metric-input",
+        "ci-segmented",
+        "ci-tabs-compact",
+        "ci-ai-action",
+        "ci-process-step"
+      ],
+      "reference": "CONTROLS.md",
+      "demo": "controls-consistency-demo.html",
+      "test": "tests/controls-consistency-playwright.js"
+    },
+    {
+      "id": "milo-mark-consistency",
+      "description": "Every ci-mark usage renders the official assets/milo-mark.svg: dark Milo figure on a white tile with visible Milo wordmark. Deprecated bar fallbacks and recolored mark variants are not used in app UI.",
+      "requiredAsset": "assets/milo-mark.svg",
+      "requiredMarkup": "<img class=\"ci-mark-img\" src=\".../assets/milo-mark.svg\" alt=\"\">",
+      "test": "tests/milo-mark-consistency.ps1"
+    },
+    {
+      "id": "generated-milo-mark-assets",
+      "description": "Reusable Milo mark graphics are exported from the official mark into SVG, PNG and JPG variants. Alpha variants are available where the format supports transparency; JPG is white background only.",
+      "assetDirectory": "assets/milo/",
+      "sourceAsset": "assets/milo-mark.svg",
+      "test": "tests/milo-generated-assets.ps1"
+    },
+    {
+      "id": "milo-login-layout",
+      "description": "Authenticated Milo apps use the Animation-style login layout: centered card, official Milo mark, concise context, labeled inputs and one primary login action.",
+      "requiredClasses": [
+        "ci-login-page",
+        "ci-login-card",
+        "ci-login-title",
+        "ci-login-copy",
+        "ci-login-form",
+        "ci-login-actions"
+      ],
+      "reference": "LOGIN.md",
+      "demo": "login-demo.html",
+      "test": "tests/login-layout-playwright.js"
+    },
+    {
+      "id": "iphone-home-screen-icon",
+      "description": "Deployable Milo web apps provide an Apple Touch Icon and web app manifest so iPhone home screen bookmarks use the Milo mark.",
+      "requiredLinks": [
+        "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/assets/apple-touch-icon.png\">",
+        "<link rel=\"manifest\" href=\"/site.webmanifest\">"
+      ],
+      "requiredAssets": [
+        "assets/apple-touch-icon.png",
+        "assets/app-icon-192.png",
+        "assets/app-icon-512.png",
+        "site.webmanifest"
+      ],
+      "reference": "LOGIN.md",
+      "test": "tests/app-icon-assets.ps1"
+    },
+    {
+      "id": "browser-tab-current-milo-icon",
+      "description": "Browser tabs use the current Milo icon through SVG favicon plus PNG and ICO fallbacks. Favicon links include a version query to avoid stale cached older icons.",
+      "requiredLinks": [
+        "<link rel=\"icon\" href=\"/assets/favicon.svg?v=1.4.0\" type=\"image/svg+xml\">",
+        "<link rel=\"icon\" href=\"/assets/favicon-32.png?v=1.4.0\" sizes=\"32x32\" type=\"image/png\">",
+        "<link rel=\"shortcut icon\" href=\"/assets/favicon.ico?v=1.4.0\">"
+      ],
+      "requiredAssets": [
+        "assets/favicon.svg",
+        "assets/favicon-16.png",
+        "assets/favicon-32.png",
+        "assets/favicon-48.png",
+        "assets/favicon.ico"
+      ],
+      "test": "tests/favicon-consistency.ps1"
+    },
+    {
+      "id": "workflow-resilience",
+      "description": "Long-running, costly, asynchronous or editorial workflows use durable job IDs, autosave, resume, idempotency, explicit suggestion adoption, versioned results, clear error causes and visible download/export actions.",
+      "requiredClasses": [
+        "ci-job-card",
+        "ci-job-meta",
+        "ci-save-state",
+        "ci-candidate",
+        "ci-result-toolbar",
+        "ci-action-bar",
+        "ci-error-note",
+        "ci-state-list"
+      ],
+      "reference": "WORKFLOW-UX.md",
+      "demo": "workflow-resilience-demo.html",
+      "test": "tests/workflow-resilience-playwright.js"
+    },
+    {
+      "id": "milo-ci-adoption-required",
+      "description": "Updating or deploying a Milo UI is complete only when the target project has migrated affected real app pages and tools/check-adoption.mjs passes without failures.",
+      "reference": "ADOPTION.md",
+      "requiredCommand": "node \"C:\\Users\\admin\\Documents\\ChatGPT\\Milo CI\\tools\\check-adoption.mjs\" \"<project-path>\"",
+      "blockingFor": [
+        "Milo CI update",
+        "UI release",
+        "staging deployment",
+        "production deployment",
+        "redeployment"
+      ],
+      "test": "tests/adoption-checker-regression.js"
+    }
+  ],
+  "changes": [
+    {
+      "version": "1.5.0",
+      "date": "2026-09-12",
+      "changedFiles": [
+        "ADOPTION.md",
+        "CHANGELOG.md",
+        "ci-manifest.json",
+        "codex-ui-instructions.md",
+        "INTEGRATION.md",
+        "README.md",
+        "tests/adoption-checker-regression.js",
+        "tools/check-adoption.mjs"
+      ],
+      "summary": [
+        "Added a reusable Milo CI adoption checker for target projects.",
+        "Made copying vendored CI files insufficient without migrating and checking real app pages.",
+        "Documented checker failures as blockers for commits, tags, staging, production and redeployments."
+      ],
+      "downstreamActions": [
+        "Do not treat copied vendored CI files as a completed Milo CI update.",
+        "Migrate affected real app pages to the current Milo CI rules.",
+        "Run tools/check-adoption.mjs against the target project after every Milo CI update and before release or deployment.",
+        "Fix all checker failures before commit, tag, stage, production or redeployment.",
+        "Review warnings and either fix them or document the project-specific exception."
+      ]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2026-09-12",
+      "changedFiles": [
+        "CHANGELOG.md",
+        "CONTROLS.md",
+        "DARK-MODE.md",
+        "INTEGRATION.md",
+        "LOGIN.md",
+        "PROCESS-UX.md",
+        "README.md",
+        "WORKFLOW-UX.md",
+        "assets/app-icon-192.png",
+        "assets/app-icon-512.png",
+        "assets/apple-touch-icon.png",
+        "assets/favicon-16.png",
+        "assets/favicon-32.png",
+        "assets/favicon-48.png",
+        "assets/favicon.ico",
+        "assets/favicon.svg",
+        "assets/milo-mark-light.svg",
+        "assets/milo-mark.svg",
+        "assets/milo/",
+        "ci-manifest.json",
+        "ci.css",
+        "codex-ui-instructions.md",
+        "controls-consistency-demo.html",
+        "dark-mode-demo.html",
+        "example.html",
+        "login-demo.html",
+        "process-stability-demo.html",
+        "site.webmanifest",
+        "tests/app-icon-assets.ps1",
+        "tests/controls-consistency-playwright.js",
+        "tests/dark-mode-playwright.js",
+        "tests/favicon-consistency.ps1",
+        "tests/login-layout-playwright.js",
+        "tests/milo-generated-assets.ps1",
+        "tests/milo-mark-consistency.ps1",
+        "tests/process-stability-playwright.js",
+        "tests/workflow-resilience-playwright.js",
+        "tokens.css",
+        "workflow-resilience-demo.html"
+      ],
+      "summary": [
+        "Set Milo Night Workbench as the default UI mode with light mode as opt-in.",
+        "Added stable process UX, durable workflow UX, unified controls, login layout, home screen icons and current favicon assets.",
+        "Provided generated Milo mark graphics and consistency tests for downstream apps."
+      ],
+      "downstreamActions": [
+        "Use durable job IDs and idempotency keys for long-running, costly or asynchronous actions.",
+        "Persist sources, inputs, app version, CI version and relevant rule/config versions with each job.",
+        "Resume or re-query existing jobs after reload, login or unclear server responses before creating new variants.",
+        "Keep suggestions as explicit candidates with accept, reject and compare actions.",
+        "Keep previous inputs, snapshots and results visible on errors or rule changes.",
+        "Show clear error causes and visible download/export actions in the app UI.",
+        "Run tests/workflow-resilience-playwright.js before UI release.",
+        "Adopt dark Milo Night Workbench as the default UI without a theme attribute.",
+        "Use data-ci-theme=\"light\" only for intentional light-mode contexts.",
+        "Update vendored assets/milo-mark.svg and add assets/milo-mark-light.svg for light contexts.",
+        "Keep Milo unchanged in character: original dark figure on a white tile.",
+        "Verify dark UI on desktop, small laptop and mobile before release.",
+        "Adopt ci-process and ci-process-bar for multi-step flows.",
+        "Use ci-media-workbench and ci-preview-frame for image, video, audio and document tools.",
+        "Move loading, validation, suggestions, errors and progress into reserved regions instead of replacing the whole workspace.",
+        "Use ci-ai-action with Sparkles or magic-wand icons and explicit suggestion adoption.",
+        "Run the process stability Playwright regression before UI release.",
+        "Update vendored tokens.css and ci.css.",
+        "Replace local button, input, select, segmented and icon-button styling with Milo control classes.",
+        "Use ci-button-block for full-width primary actions.",
+        "Remove local border-radius and height overrides from standard controls.",
+        "Run the controls consistency Playwright regression before UI release.",
+        "Render the official assets/milo-mark.svg in every ci-mark slot.",
+        "Remove deprecated ci-mark-bars fallback markup from app shells.",
+        "Keep the standard mark as dark Milo figure on white tile, also in default dark mode.",
+        "Run tests/milo-mark-consistency.ps1 when updating vendored CI assets.",
+        "Use ci-button-primary only for true primary actions.",
+        "Use plain ci-button or ci-button-secondary for normal actions.",
+        "Use ci-metric-input for prominent numeric parameter fields.",
+        "Use ci-tabs-compact when a tool has many top-level tabs.",
+        "Use assets/milo-mark.svg for Milo UI shells.",
+        "Use assets/milo/ PNG, JPG or SVG variants for documents, uploads, external previews and contexts that require fixed raster sizes.",
+        "Use alpha SVG/PNG for transparent backgrounds; use white JPG because JPEG has no alpha channel.",
+        "Run tests/milo-generated-assets.ps1 when updating vendored Milo assets.",
+        "Replace project-specific login pages with the ci-login-page and ci-login-card layout.",
+        "Use the official Milo mark in login cards.",
+        "Add apple-touch-icon, favicon and web manifest links to deployable HTML shells.",
+        "Vendor assets/apple-touch-icon.png, assets/app-icon-192.png, assets/app-icon-512.png and site.webmanifest.",
+        "Run login layout and app icon regressions before UI release.",
+        "Vendor the current favicon SVG, PNG and ICO files.",
+        "Replace old favicon links with versioned current Milo favicon links.",
+        "Keep apple-touch-icon for iPhone home screen usage.",
+        "Run tests/favicon-consistency.ps1 when updating HTML shells."
+      ]
+    },
+    {
+      "version": "1.3.2",
+      "date": "2026-09-03",
+      "changedFiles": [
+        "assets/milo-mark.svg",
+        "assets/favicon.svg",
+        "ci.css",
+        "example.html",
+        "hidden-regression.html",
+        "README.md",
+        "BRAND.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Moved the visible Milo name into the official mark under the small robot.",
+        "Changed UI naming guidance so app titles use descriptive tool names without a Milo text prefix."
+      ],
+      "downstreamActions": [
+        "Update vendored assets/milo-mark.svg and favicon.svg.",
+        "Remove Milo text prefixes from visible app titles such as topbar brand titles.",
+        "Keep descriptive tool names such as LEQ, Upmix or SSP Request in the UI."
+      ]
+    },
+    {
+      "version": "1.3.1",
+      "date": "2026-09-01",
+      "changedFiles": [
+        "ci.css",
+        "hidden-regression.html",
+        "tests/hidden-attribute-regression.ps1",
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Added a central [hidden] override so native HTML hidden wins against ci-* component display rules.",
+        "Added a small regression demo and static test for hidden ci-workspace, ci-tabs, ci-button and ci-activity elements."
+      ],
+      "downstreamActions": [
+        "Update vendored ci.css and keep [hidden] { display: none !important; } in the base layer.",
+        "Check local component CSS for selectors that override [hidden].",
+        "Use hidden-regression.html or the static PowerShell test when adapting Milo UI shells."
+      ]
+    },
+    {
+      "version": "1.3.0",
+      "date": "2026-09-01",
+      "changedFiles": [
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "PDF.md",
+        "DATA-VIS.md",
+        "tokens.css",
+        "pdf-tokens.json",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Added a dedicated Milo chart and data visualization palette.",
+        "Documented that chart libraries must not use default colors such as brown or generic green."
+      ],
+      "downstreamActions": [
+        "Map chart libraries to the --milo-chart-* tokens or pdf-tokens.json chart colors.",
+        "Replace brown, generic green, rainbow or arbitrary warm data colors with the Milo chart palette.",
+        "Use warning and danger chart colors only when the data meaning is actually warning or critical."
+      ]
+    },
+    {
+      "version": "1.2.2",
+      "date": "2026-08-31",
+      "changedFiles": [
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "PDF.md",
+        "pdf-tokens.json",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "PDF output must follow Milo CI.",
+        "Source-identifiable, consistent export names are mandatory across applications."
+      ],
+      "downstreamActions": [
+        "Vendor pdf-tokens.json and apply PDF.md to report renderers.",
+        "Use correct product naming in PDF headers and metadata.",
+        "Align filenames across reports, audio and archive members; test Content-Disposition.",
+        "Render representative PDF pages, including long source names, before release."
+      ]
+    },
+    {
+      "version": "1.2.1",
+      "date": "2026-08-31",
+      "changedFiles": [
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Documented deployment isolation for downstream projects.",
+        "Clarified that Milo CI local paths are for development and reference only.",
+        "Required downstream projects to copy or vendor needed CI files/assets before build or deployment."
+      ],
+      "downstreamActions": [
+        "Do not keep production build imports that point to the local Milo CI project folder.",
+        "Copy or vendor required CSS files and assets into the downstream repository or build artifact path.",
+        "Verify production builds run from the downstream project without access to C:\\Users\\admin\\Documents\\ChatGPT\\Milo CI."
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-08-30",
+      "changedFiles": [
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "example.html",
+        "ci.css",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Added authentication UX/security rule for Milo apps.",
+        "Added topbar logout button styling.",
+        "Added default idle timeout guidance."
+      ],
+      "downstreamActions": [
+        "If the app has authentication, add a visible .ci-logout-button to .ci-topbar-meta.",
+        "Implement automatic logout after 30 minutes of inactivity.",
+        "Ensure logout invalidates the actual session or token, not only the current UI view."
+      ]
+    },
+    {
+      "version": "1.1.1",
+      "date": "2026-08-30",
+      "changedFiles": [
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "tokens.css",
+        "ci.css",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Changed selected segmented button states from dark ink to Milo teal.",
+        "Added selected-state tokens for downstream apps."
+      ],
+      "downstreamActions": [
+        "Replace dark selected toggle backgrounds with var(--milo-selected-bg).",
+        "Use var(--milo-selected-text) for text on selected teal controls.",
+        "Keep dark ink backgrounds for topbars, consoles, and strong structural surfaces."
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-08-29",
+      "changedFiles": [
+        "README.md",
+        "INTEGRATION.md",
+        "codex-ui-instructions.md",
+        "example.html",
+        "ci.css",
+        "VERSION",
+        "CHANGELOG.md",
+        "ci-manifest.json"
+      ],
+      "summary": [
+        "Added fixed app version placement in the topbar.",
+        "Added machine-readable CI update metadata.",
+        "Documented how downstream apps should detect and apply CI changes."
+      ],
+      "downstreamActions": [
+        "Add .ci-topbar-meta around .ci-status and .ci-version in every app topbar.",
+        "Show the app version as vMAJOR.MINOR.PATCH in .ci-version.",
+        "When checking for global CI updates, compare VERSION or ciVersion in ci-manifest.json."
+      ]
+    }
+  ],
+  "unreleased": []
+}

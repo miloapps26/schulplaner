@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milo Workflow UX Demo</title>
+  <link rel="icon" href="assets/favicon.svg?v=1.4.0" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png?v=1.4.0" sizes="32x32" type="image/png">
+  <link rel="shortcut icon" href="assets/favicon.ico?v=1.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="ci.css">
+</head>
+<body>
+  <div class="ci-app">
+    <header class="ci-topbar">
+      <div class="ci-brand">
+        <div class="ci-mark" aria-hidden="true">
+          <img class="ci-mark-img" src="assets/milo-mark.svg" alt="">
+        </div>
+        <div>
+          <h1 class="ci-brand-title">Workflow UX</h1>
+          <p class="ci-brand-subtitle">Durable Jobs</p>
+        </div>
+      </div>
+      <div class="ci-topbar-meta">
+        <div class="ci-status">Running</div>
+        <div class="ci-version">v1.4.0</div>
+      </div>
+    </header>
+
+    <nav class="ci-tabs ci-tabs-compact" aria-label="Demo tabs">
+      <button class="ci-tab" type="button" aria-selected="true">Job</button>
+      <button class="ci-tab" type="button">Versions</button>
+      <button class="ci-tab" type="button">Activity</button>
+    </nav>
+
+    <main class="ci-main">
+      <section class="ci-workspace ci-process ci-workflow-demo">
+        <div class="ci-process-bar">
+          <div class="ci-process-steps" aria-label="Process">
+            <span class="ci-process-step">Brief</span>
+            <span class="ci-process-step" aria-current="step">Create</span>
+            <span class="ci-process-step">Review</span>
+            <span class="ci-process-step">Export</span>
+          </div>
+          <div class="ci-process-nav">
+            <button class="ci-button" type="button">Back</button>
+            <button class="ci-button ci-button-primary" type="button" disabled>Job running</button>
+          </div>
+        </div>
+
+        <div class="ci-process-stage">
+          <div class="ci-media-workbench">
+            <section class="ci-preview-pane">
+              <p class="ci-section-kicker">REFERENCE</p>
+              <h2 class="ci-h1">Source stays visible</h2>
+              <div class="ci-preview-frame">
+                <div class="ci-preview-result">
+                  <div>
+                    <strong>Current result preview</strong>
+                    <p class="ci-small">The result uses the same preview slot as the original reference.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="ci-result-toolbar">
+                <span class="ci-badge" data-tone="success">Draft saved</span>
+                <button class="ci-button ci-button-secondary" type="button">Download draft</button>
+                <button class="ci-button ci-button-primary" type="button">Export final</button>
+              </div>
+            </section>
+
+            <section class="ci-settings-pane">
+              <div class="ci-job-card">
+                <div>
+                  <p class="ci-section-kicker">JOB</p>
+                  <h2>Production #A17</h2>
+                </div>
+                <dl class="ci-job-meta">
+                  <div><dt>App</dt><dd>v0.8.2</dd></div>
+                  <div><dt>CI</dt><dd>1.4.0</dd></div>
+                  <div><dt>Rules</dt><dd>briefing-2026-09</dd></div>
+                  <div><dt>Source</dt><dd>unchanged</dd></div>
+                </dl>
+                <div class="ci-save-state" role="status" aria-live="polite">Saved 15:42</div>
+              </div>
+
+              <div class="ci-status-panel" data-state="running" role="status" aria-live="polite">
+                <span>Creating output from saved job</span>
+                <div class="ci-progress" aria-busy="true"><span></span></div>
+              </div>
+
+              <div class="ci-candidate">
+                <div>
+                  <p class="ci-section-kicker">SUGGESTION</p>
+                  <p>Shorten the headline and keep the original wording available.</p>
+                </div>
+                <div class="ci-suggestion-actions">
+                  <button class="ci-button ci-button-primary" type="button">Accept</button>
+                  <button class="ci-button" type="button">Reject</button>
+                  <button class="ci-button ci-button-secondary" type="button">Compare</button>
+                </div>
+              </div>
+
+              <div class="ci-error-note" role="status">
+                <strong>Server not reachable.</strong>
+                <span>The saved job remains visible. Reconnect checks status before a new variant can be created.</span>
+              </div>
+            </section>
+          </div>
+
+          <section class="ci-workflow-section">
+            <div class="ci-state-list">
+              <span>Accepted</span>
+              <span>Analyze source</span>
+              <span>Create</span>
+              <span>Check</span>
+              <span>Manual required</span>
+              <span>Complete</span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

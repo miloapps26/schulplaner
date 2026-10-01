@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Schulplaner</title>
+    <link rel="icon" href="/static/ci/assets/favicon.svg?v=1.5.0" type="image/svg+xml">
+    <link rel="icon" href="/static/ci/assets/favicon-32.png?v=1.5.0" sizes="32x32" type="image/png">
+    <link rel="shortcut icon" href="/static/ci/assets/favicon.ico?v=1.5.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/ci/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#0f141a">
+    <link rel="stylesheet" href="/static/ci/tokens.css">
+    <link rel="stylesheet" href="/static/ci/ci.css">
+    <link rel="stylesheet" href="/static/app.css">
+  </head>
+  <body>
+    <div class="ci-app timetable-page">
+      <header class="ci-topbar">
+        <div class="ci-brand">
+          <div class="ci-mark" aria-hidden="true">
+            <img class="ci-mark-img" src="/static/ci/assets/milo-mark.svg" alt="">
+          </div>
+          <div>
+            <h1 class="ci-brand-title">Schulplaner</h1>
+            <p class="ci-brand-subtitle" id="brand-subtitle">Organisiert durch die Schulwoche</p>
+          </div>
+        </div>
+        <div class="ci-topbar-meta">
+          <div class="ci-status" id="top-status">Loading</div>
+          <div class="ci-version">v0.9.1</div>
+          <button class="ci-logout-button" id="logout-button" type="button">
+            <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <nav class="ci-tabs main-tabs" aria-label="Ansicht">
+        <button class="ci-tab" type="button" data-tab="timetable" aria-selected="true">Stundenplan</button>
+        <button class="ci-tab" type="button" data-tab="homework" aria-selected="false">Hausaufgaben</button>
+        <button class="ci-tab" type="button" data-tab="exams" aria-selected="false">Klassenarbeiten</button>
+        <button class="ci-tab" type="button" data-tab="transit" aria-selected="false">Bus</button>
+        <button class="ci-tab" type="button" data-tab="manual-lessons" aria-selected="false">Termine</button>
+        <button class="ci-tab" type="button" data-tab="profile" aria-selected="false">Profil</button>
+        <button class="ci-tab" type="button" data-tab="help" aria-selected="false">Hilfe</button>
+      </nav>
+
+      <main class="ci-main timetable-main">
+        <section class="tab-view timetable-shell" data-view="timetable">
+          <div class="timetable-bar">
+            <div>
+              <p class="ci-section-kicker">Aktuelle Woche</p>
+              <h2 class="timetable-title">Stundenplan</h2>
+              <p class="profile-context" id="profile-context"></p>
+              <p class="snapshot-stamp" id="snapshot-stamp">Stand wird geladen...</p>
+            </div>
+            <div class="timetable-actions">
+              <div class="ci-segmented week-switch" role="group" aria-label="Woche">
+                <button type="button" data-week="current" aria-pressed="false">Diese Woche</button>
+                <button type="button" data-week="next" aria-pressed="false">Nächste Woche</button>
+              </div>
+              <div class="ci-segmented view-switch" role="group" aria-label="Ansicht">
+                <button type="button" data-layout="day" aria-pressed="true">Tag</button>
+                <button type="button" data-layout="week" aria-pressed="false">Woche</button>
+              </div>
+              <div class="ci-segmented mode-switch" role="group" aria-label="Darstellung">
+                <button type="button" data-mode="actual" aria-pressed="true">Aktuell</button>
+                <button type="button" data-mode="changes" aria-pressed="false">Änderungen</button>
+              </div>
+              <button class="ci-icon-button" id="refresh-timetable" type="button" title="Aktualisieren">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="day-switch" class="day-switch" hidden></div>
+          <div id="timetable" class="timetable-grid"></div>
+        </section>
+
+        <section class="tab-view transit-shell" data-view="transit" hidden>
+          <div class="transit-bar">
+            <div>
+              <p class="ci-section-kicker">Busfahrplan</p>
+              <h2 class="timetable-title">Schulweg für den Tag</h2>
+              <p class="snapshot-stamp" id="transit-stamp">Fahrplan wird geladen...</p>
+            </div>
+            <div class="transit-actions">
+              <div class="ci-segmented week-switch" role="group" aria-label="Bus-Woche">
+                <button type="button" data-week="current" aria-pressed="false">Diese Woche</button>
+                <button type="button" data-week="next" aria-pressed="false">Nächste Woche</button>
+              </div>
+              <div class="ci-segmented transit-view-switch" role="group" aria-label="Busfahrplan-Ansicht">
+                <button type="button" data-transit-view="recommended" aria-pressed="true">Empfohlen</button>
+                <button type="button" data-transit-view="full" aria-pressed="false">Tagesfahrplan</button>
+              </div>
+              <button class="ci-icon-button" id="refresh-transit" type="button" title="Busfahrplan aktualisieren">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="transit-day-switch" class="day-switch"></div>
+          <div id="transit-warnings" class="transit-warnings"></div>
+          <div class="transit-recommendations" id="transit-recommendations"></div>
+          <div class="transit-day-details" id="transit-day-details" hidden>
+            <div class="transit-day-details-header">
+              <span class="ci-section-kicker">Tagesfahrplan</span>
+              <span class="transit-count" id="transit-full-count"></span>
+            </div>
+            <div class="transit-lists">
+              <section>
+                <h3>Zur Schule</h3>
+                <div id="transit-outbound" class="transit-list"></div>
+              </section>
+              <section>
+                <h3>Nach Hause</h3>
+                <div id="transit-return" class="transit-list"></div>
+              </section>
+            </div>
+          </div>
+          <p class="transit-context">
+            Fahrplandaten: HOCHBAHN/HVV über Geofox, ersatzweise GTFS-Sollfahrplan.
+            Angaben ohne Gewähr. <a href="https://www.hvv.de/" target="_blank" rel="noopener noreferrer">Zur HVV-Auskunft</a>
+          </p>
+        </section>
+
+        <section class="tab-view homework-shell" data-view="homework" hidden>
+          <div class="homework-bar">
+            <div>
+              <p class="ci-section-kicker">Hausaufgaben</p>
+              <h2 class="timetable-title">Offene und erledigte Aufgaben</h2>
+              <p class="snapshot-stamp" id="homework-stamp">Stand wird geladen...</p>
+            </div>
+            <div class="homework-actions">
+              <div class="ci-segmented homework-switch" role="group" aria-label="Hausaufgabenstatus">
+                <button type="button" data-homework-mode="open" aria-pressed="true">Offen</button>
+                <button type="button" data-homework-mode="completed" aria-pressed="false">Erledigt</button>
+              </div>
+              <button class="ci-icon-button" id="refresh-homework" type="button" title="Aktualisieren">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <form class="homework-form" id="homework-form">
+            <label>
+              <span>Eigene Aufgabe</span>
+              <input id="homework-text" type="text" maxlength="2000" placeholder="z. B. Vokabeln lernen" required>
+            </label>
+            <label>
+              <span>Fach</span>
+              <input id="homework-subject" type="text" maxlength="120" placeholder="z. B. Englisch">
+            </label>
+            <label>
+              <span>Erledigen bis</span>
+              <input id="homework-due-date" type="date">
+            </label>
+            <button class="ci-button" type="submit">Hinzufügen</button>
+          </form>
+
+          <div class="homework-summary" id="homework-summary"></div>
+          <div id="homework-list" class="homework-list"></div>
+        </section>
+
+        <section class="tab-view exams-shell" data-view="exams" hidden>
+          <div class="exams-bar">
+            <div>
+              <p class="ci-section-kicker">Klassenarbeiten</p>
+              <h2 class="timetable-title">Anstehende Arbeiten</h2>
+              <p class="snapshot-stamp" id="exams-stamp">Stand wird geladen...</p>
+            </div>
+            <div class="exams-actions">
+              <button class="ci-icon-button" id="refresh-exams" type="button" title="Klassenarbeiten aktualisieren">
+                <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="homework-summary" id="exams-summary"></div>
+          <div id="exams-list" class="exam-list"></div>
+        </section>
+
+        <section class="tab-view manual-lesson-shell" data-view="manual-lessons" hidden>
+          <div class="manual-lesson-bar">
+            <div>
+              <p class="ci-section-kicker">Eigene Termine</p>
+              <h2 class="timetable-title">Zusätzliche Unterrichtsstunden</h2>
+              <p class="snapshot-stamp" id="manual-lesson-stamp">AGs und eigene Termine erscheinen im Stundenplan.</p>
+            </div>
+          </div>
+
+          <form class="manual-lesson-form" id="manual-lesson-form">
+            <label>
+              <span>Termin</span>
+              <input id="manual-lesson-title" type="text" maxlength="160" placeholder="z. B. Theater-AG" required>
+            </label>
+            <label>
+              <span>Rhythmus</span>
+              <select id="manual-lesson-repeat">
+                <option value="true">Wöchentlich</option>
+                <option value="false">Einmalig</option>
+              </select>
+            </label>
+            <label id="manual-lesson-weekday-field">
+              <span>Wochentag</span>
+              <select id="manual-lesson-weekday">
+                <option value="0">Montag</option>
+                <option value="1">Dienstag</option>
+                <option value="2">Mittwoch</option>
+                <option value="3">Donnerstag</option>
+                <option value="4">Freitag</option>
+              </select>
+            </label>
+            <label id="manual-lesson-date-field" hidden>
+              <span>Datum</span>
+              <input id="manual-lesson-date" type="date">
+            </label>
+            <label>
+              <span>Von</span>
+              <input id="manual-lesson-start" type="time" value="14:15" required>
+            </label>
+            <label>
+              <span>Bis</span>
+              <input id="manual-lesson-end" type="time" value="15:00" required>
+            </label>
+            <label>
+              <span>Ort</span>
+              <input id="manual-lesson-room" type="text" maxlength="120" placeholder="optional">
+            </label>
+            <label>
+              <span>Notiz</span>
+              <input id="manual-lesson-note" type="text" maxlength="500" placeholder="optional">
+            </label>
+            <button class="ci-button" type="submit">Hinzufügen</button>
+          </form>
+
+          <div class="manual-lesson-summary" id="manual-lesson-summary"></div>
+          <div id="manual-lesson-list" class="manual-lesson-list"></div>
+        </section>
+
+        <section class="tab-view profile-shell" data-view="profile" hidden>
+          <div class="profile-bar">
+            <div>
+              <p class="ci-section-kicker">Profil</p>
+              <h2 class="timetable-title">WebUntis Zugang</h2>
+              <p class="profile-context" id="parent-profile-context"></p>
+            </div>
+          </div>
+          <details class="profile-guide">
+            <summary>Wo finde ich diese Angaben?</summary>
+            <ol class="profile-guide-steps">
+              <li>
+                <div>
+                  <h3>Bei WebUntis einloggen</h3>
+                  <p>Öffne WebUntis und melde dich mit deinem WebUntis- oder IServ-Zugang an.</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>Freigaben öffnen</h3>
+                  <p>Unten links auf den eigenen Namen klicken, oben <strong>Freigaben</strong> öffnen und bei <strong>Zugriff über Untis Mobile</strong> auf <strong>Anzeigen</strong> klicken. Im grauen Kasten unter dem QR-Code stehen Schulnummer, Server, Schulname, Benutzername und App-Schlüssel.</p>
+                </div>
+                <figure>
+                  <img src="/static/guide/webuntis-05-mobile-key.png" alt="WebUntis-Freigaben mit anonymisiertem QR-Code und App-Schlüssel">
+                </figure>
+              </li>
+              <li>
+                <div>
+                  <h3>Element-ID aus dem Stundenplan-Link kopieren</h3>
+                  <p>Öffne <strong>Mein Stundenplan</strong> und wähle unten über die drei Punkte <strong>Öffentlichen Link kopieren</strong>. Füge den Link kurz irgendwo ein, damit du ihn sehen kannst. Die Zahl hinter <code>entityId=</code> kommt in <strong>Element-ID</strong>.</p>
+                </div>
+                <figure>
+                  <img src="/static/guide/webuntis-03-public-link-menu.png" alt="WebUntis-Stundenplan mit Menüpunkt Öffentlichen Link kopieren">
+                </figure>
+                <figure>
+                  <img src="/static/guide/webuntis-04-entityid-url.png" alt="Beispiel-Link mit entityId">
+                </figure>
+              </li>
+              <li>
+                <div>
+                  <h3>Passwort</h3>
+                  <p>Das Passwort ist dein WebUntis-/IServ-Passwort. Wenn ein Passwort oder App-Schlüssel bereits gespeichert ist, zeigt das Feld <code>********</code>. Zum Ändern einfach den neuen Wert eintragen.</p>
+                </div>
+              </li>
+            </ol>
+          </details>
+          <form class="tenant-form parent-profile-form" id="parent-profile-form">
+            <div class="tenant-form-grid">
+              <label class="ci-field">
+                <span class="ci-label">WebUntis Server</span>
+                <input id="parent-webuntis-server" type="text" maxlength="300" placeholder="herderschule-lueneburg.webuntis.com">
+                <small class="field-help">Steht im grauen Kasten unter dem QR-Code. Siehe Anleitung oben: Url.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Schulname</span>
+                <input id="parent-webuntis-school" type="text" maxlength="200" placeholder="herderschule-lueneburg">
+                <small class="field-help">Steht im grauen Kasten unter dem QR-Code. Siehe Anleitung oben: Schule.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">WebUntis Benutzername</span>
+                <input id="parent-webuntis-username" type="text" maxlength="200" autocomplete="username">
+                <small class="field-help">Steht im grauen Kasten unter dem QR-Code. Siehe Anleitung oben: Benutzer. Wird auch für den Login genutzt.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">WebUntis Passwort</span>
+                <input id="parent-webuntis-password" type="password" maxlength="500" autocomplete="current-password">
+                <small class="field-help">Dein WebUntis-/IServ-Passwort. Sterne bedeuten: gespeichert. Zum Ändern neuen Wert eintragen.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">App-Schlüssel</span>
+                <input id="parent-webuntis-app-secret" type="password" maxlength="500" autocomplete="new-password">
+                <small class="field-help">Steht im grauen Kasten unter dem QR-Code. Siehe Anleitung oben: Schlüssel.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Elementtyp</span>
+                <input id="parent-webuntis-element-type" type="number" min="1" max="5" value="5">
+                <small class="field-help">Für Schüler-Stundenpläne normalerweise 5.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Element-ID <span class="ci-label-value">oder Klassenname</span></span>
+                <input id="parent-webuntis-element-id" type="number">
+                <small class="field-help">Steht im öffentlichen Stundenplan-Link. Siehe Anleitung oben: Zahl hinter entityId=.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Klassenname <span class="ci-label-value">nur ohne Element-ID nötig</span></span>
+                <input id="parent-webuntis-class-name" type="text" maxlength="120">
+                <small class="field-help">Nur nötig, wenn keine Element-ID bekannt ist. Beispiel: 5D.</small>
+              </label>
+              <label class="ci-field">
+                <span class="ci-label">Schulnummer</span>
+                <input id="parent-webuntis-school-number" type="text" maxlength="80" placeholder="z. B. 2340000">
+                <small class="field-help">Steht im grauen Kasten unter dem QR-Code. Siehe Anleitung oben: Schulnummer.</small>
+              </label>
+            </div>
+            <section class="profile-subsection">
+              <p class="ci-section-kicker">Bus</p>
+              <h3>Haltestellen und Puffer</h3>
+              <div class="transit-compatibility">
+                <strong>Verfügbare Fahrdaten</strong>
+                <span>Im HVV-Gebiet nutzt die App Geofox mit aktuellen Fahrplan- und, wenn verfügbar, Echtzeitdaten. Falls Geofox nicht erreichbar ist, erscheint gekennzeichnet der deutschlandweite GTFS-Sollfahrplan.</span>
+              </div>
+              <div class="tenant-form-grid">
+                <label class="ci-field">
+                  <span class="ci-label">Hin Start</span>
+                  <textarea id="parent-transit-outbound-origins" rows="3" maxlength="2000" hidden></textarea>
+                  <div class="stop-picker" data-stop-field="outbound_origins">
+                    <div class="stop-picker-control">
+                      <input class="ci-input" type="text" autocomplete="off" placeholder="z. B. Wittorf, Birkenweg" data-stop-input="outbound_origins">
+                      <button class="ci-button secondary-button" type="button" data-stop-add="outbound_origins" disabled>Hinzufügen</button>
+                    </div>
+                    <div class="stop-suggestions" data-stop-suggestions="outbound_origins"></div>
+                    <div class="stop-chips" data-stop-chips="outbound_origins"></div>
+                    <div class="stop-validation" data-stop-validation="outbound_origins"></div>
+                  </div>
+                  <small class="field-help">Eine oder mehrere Start-Haltestellen auswählen.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Hin Ziel</span>
+                  <textarea id="parent-transit-outbound-destinations" rows="3" maxlength="2000" hidden></textarea>
+                  <div class="stop-picker" data-stop-field="outbound_destinations">
+                    <div class="stop-picker-control">
+                      <input class="ci-input" type="text" autocomplete="off" placeholder="z. B. Lüneburg, Herderschule" data-stop-input="outbound_destinations">
+                      <button class="ci-button secondary-button" type="button" data-stop-add="outbound_destinations" disabled>Hinzufügen</button>
+                    </div>
+                    <div class="stop-suggestions" data-stop-suggestions="outbound_destinations"></div>
+                    <div class="stop-chips" data-stop-chips="outbound_destinations"></div>
+                    <div class="stop-validation" data-stop-validation="outbound_destinations"></div>
+                  </div>
+                  <small class="field-help">Alle passenden Haltestellen an der Schule auswählen.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Zurück Start</span>
+                  <textarea id="parent-transit-return-origins" rows="3" maxlength="2000" hidden></textarea>
+                  <div class="stop-picker" data-stop-field="return_origins">
+                    <div class="stop-picker-control">
+                      <input class="ci-input" type="text" autocomplete="off" placeholder="z. B. Lüneburg, Witzendorffstraße" data-stop-input="return_origins">
+                      <button class="ci-button secondary-button" type="button" data-stop-add="return_origins" disabled>Hinzufügen</button>
+                    </div>
+                    <div class="stop-suggestions" data-stop-suggestions="return_origins"></div>
+                    <div class="stop-chips" data-stop-chips="return_origins"></div>
+                    <div class="stop-validation" data-stop-validation="return_origins"></div>
+                  </div>
+                  <small class="field-help">Haltestellen auswählen, an denen das Kind nach Schulschluss einsteigen kann.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Zurück Ziel</span>
+                  <textarea id="parent-transit-return-destinations" rows="3" maxlength="2000" hidden></textarea>
+                  <div class="stop-picker" data-stop-field="return_destinations">
+                    <div class="stop-picker-control">
+                      <input class="ci-input" type="text" autocomplete="off" placeholder="z. B. Wittorf, Birkenweg" data-stop-input="return_destinations">
+                      <button class="ci-button secondary-button" type="button" data-stop-add="return_destinations" disabled>Hinzufügen</button>
+                    </div>
+                    <div class="stop-suggestions" data-stop-suggestions="return_destinations"></div>
+                    <div class="stop-chips" data-stop-chips="return_destinations"></div>
+                    <div class="stop-validation" data-stop-validation="return_destinations"></div>
+                  </div>
+                  <small class="field-help">Eine oder mehrere Ziel-Haltestellen auswählen.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Ankunft min. vorher</span>
+                  <input id="parent-transit-arrive-before" type="number" min="0" max="180" value="10">
+                  <small class="field-help">So viele Minuten vor Unterrichtsbeginn soll der Bus spätestens ankommen.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Hin Suchfenster</span>
+                  <input id="parent-transit-arrive-window" type="number" min="1" max="360" value="60">
+                  <small class="field-help">So weit vor Unterrichtsbeginn darf die Hinfahrt maximal liegen.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Abfahrt min. nachher</span>
+                  <input id="parent-transit-depart-after" type="number" min="0" max="180" value="5">
+                  <small class="field-help">So viele Minuten nach Unterrichtsende darf die Rückfahrt frühestens starten.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Zurück Suchfenster</span>
+                  <input id="parent-transit-depart-window" type="number" min="1" max="360" value="90">
+                  <small class="field-help">So lange nach Unterrichtsende werden passende Rückfahrten gesucht.</small>
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Tagesfahrplan ab</span>
+                  <input id="parent-transit-day-start" type="time" value="05:00">
+                </label>
+                <label class="ci-field">
+                  <span class="ci-label">Tagesfahrplan bis</span>
+                  <input id="parent-transit-day-end" type="time" value="20:00">
+                </label>
+                <label class="ci-field transit-direct-field">
+                  <span class="ci-label">Verbindungen</span>
+                  <span class="transit-checkbox-row">
+                    <input id="parent-transit-direct-only" type="checkbox">
+                    <span>Nur Direktverbindungen</span>
+                  </span>
+                  <small class="field-help">Deaktiviert werden auch passende Verbindungen mit Umstieg angezeigt.</small>
+                </label>
+              </div>
+            </section>
+            <div class="tenant-form-actions">
+              <button class="ci-button settings-button" type="submit">Profil speichern</button>
+              <span class="tenant-save-state" id="parent-profile-state"></span>
+            </div>
+          </form>
+        </section>
+
+        <section class="tab-view help-shell" data-view="help" hidden>
+          <div class="help-header">
+            <p class="ci-section-kicker">Hilfe</p>
+            <h2 class="timetable-title">Schulplaner kurz erklärt</h2>
+            <p class="snapshot-stamp">So findest du Stundenplan, Aufgaben, Bus und Einstellungen.</p>
+          </div>
+          <div class="help-grid">
+            <article class="help-card">
+              <h3>Stundenplan</h3>
+              <ul>
+                <li><strong>Aktuell</strong> zeigt den gültigen Stand.</li>
+                <li><strong>Änderungen</strong> zeigt nur, was sich wirklich geändert hat.</li>
+                <li><strong>Tag</strong> zeigt einen Schultag, <strong>Woche</strong> Montag bis Freitag.</li>
+                <li>Oben kannst du zwischen dieser und der nächsten Woche wechseln.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Hausaufgaben</h3>
+              <ul>
+                <li>WebUntis-Aufgaben werden automatisch übernommen.</li>
+                <li>Eigene Aufgaben können ergänzt und erledigt markiert werden.</li>
+                <li>Erledigte Aufgaben verschwinden 7 Tage nach Fälligkeit.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Bus</h3>
+              <ul>
+                <li>Wähle zuerst Woche und Schultag.</li>
+                <li><strong>Empfohlen</strong> passt zur ersten und letzten Unterrichtsstunde.</li>
+                <li><strong>Tagesfahrplan</strong> zeigt alle gefundenen Fahrten im eingestellten Zeitraum.</li>
+                <li><strong>Zur Schule</strong> und <strong>Nach Hause</strong> werden getrennt angezeigt.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Live und Sollzeit</h3>
+              <ul>
+                <li>Oben steht, ob Geofox-Live-Daten oder nur ein Sollfahrplan verwendet werden.</li>
+                <li><strong>Live</strong>, Verspätung, Ausfall und Steig erscheinen nur, wenn Geofox sie meldet.</li>
+                <li>Eine Busposition wird nur bei einer echten Fahrzeugposition gezeigt.</li>
+                <li>Der runde Pfeil lädt die gewählte Busansicht neu.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Direkt oder mit Umstieg</h3>
+              <ul>
+                <li>Im Profil findest du unter Bus die Option <strong>Nur Direktverbindungen</strong>.</li>
+                <li>Mit Haken siehst du nur Fahrten ohne Umstieg.</li>
+                <li>Ohne Haken dürfen auch passende Fahrten mit Umstieg erscheinen.</li>
+                <li>Nach <strong>Profil speichern</strong> wird der Busfahrplan mit der neuen Auswahl geladen.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Busdaten im Hintergrund</h3>
+              <ul>
+                <li>Die App lädt die auswählbaren Schultage regelmäßig vor.</li>
+                <li>Darum erscheinen viele Fahrten sofort. Manchmal braucht ein Tagesfahrplan trotzdem kurz.</li>
+                <li>Der angezeigte Stand steht direkt unter der Überschrift.</li>
+                <li>Fahrplandaten können sich kurzfristig ändern. Im Zweifel gilt die HVV-Auskunft.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>E-Mail-Hinweise</h3>
+              <ul>
+                <li>Eine E-Mail kommt, wenn sich der Stundenplan ändert.</li>
+                <li>Eine Bus-E-Mail kommt, wenn sich die empfohlene Verbindung ändert.</li>
+                <li>Eine normale Bewegung des Busses löst keine E-Mail aus.</li>
+                <li>Die Nachricht erklärt kurz, was vorher galt und was jetzt gilt.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Termine</h3>
+              <ul>
+                <li>AGs, Förderstunden oder eigene Termine erscheinen im Stundenplan.</li>
+                <li>Termine können einmalig oder jede Woche angelegt werden.</li>
+                <li>Eigene Termine ändern nichts in WebUntis.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Profil</h3>
+              <ul>
+                <li>Hier werden WebUntis-Daten, Haltestellen, Zeitfenster und die Direktoption gepflegt.</li>
+                <li>Eine Haltestelle aus der Vorschlagsliste auswählen und mit <strong>Hinzufügen</strong> übernehmen.</li>
+                <li><code>********</code> bedeutet: Der Wert ist gespeichert.</li>
+                <li>Änderungen gelten erst nach <strong>Profil speichern</strong>.</li>
+              </ul>
+            </article>
+            <article class="help-card">
+              <h3>Wenn etwas nicht stimmt</h3>
+              <ul>
+                <li>Prüfe zuerst den gewählten Tag und den angezeigten Datenstand.</li>
+                <li>Beim Bus kontrolliere Haltestellen, Tageszeitraum und die Direktoption im Profil.</li>
+                <li>Speichere das Profil und öffne den Bus danach neu.</li>
+                <li>Hilft das nicht, nutze den runden Aktualisieren-Pfeil.</li>
+                <li>Bei WebUntis-Daten hilft oft ein neuer App-Schlüssel aus den Freigaben.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>

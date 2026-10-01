@@ -1,0 +1,43 @@
+.env
+# Local environment variants; keep the public template
+.env.*
+!.env.example
+
+config/tenants.json
+# Alternative local tenant configurations
+config/tenants.local.json
+config/tenants.*.local.json
+
+.venv/
+data/
+# Temporary runtime files
+tmp/
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+*.log
+
+# Local databases and backups
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.backup
+*.dump
+
+# Private keys and certificate bundles
+*.key
+*.p12
+*.pfx
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

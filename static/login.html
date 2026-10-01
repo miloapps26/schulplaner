@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Schulplaner Login</title>
+    <link rel="icon" href="/static/ci/assets/favicon.svg?v=1.5.0" type="image/svg+xml">
+    <link rel="icon" href="/static/ci/assets/favicon-32.png?v=1.5.0" sizes="32x32" type="image/png">
+    <link rel="shortcut icon" href="/static/ci/assets/favicon.ico?v=1.5.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/ci/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#0f141a">
+    <link rel="stylesheet" href="/static/ci/tokens.css">
+    <link rel="stylesheet" href="/static/ci/ci.css">
+    <link rel="stylesheet" href="/static/app.css">
+  </head>
+  <body>
+    <main class="ci-login-page">
+      <section class="ci-login-card">
+        <div class="ci-mark" aria-hidden="true">
+          <img class="ci-mark-img" src="/static/ci/assets/milo-mark.svg" alt="">
+        </div>
+        <p class="ci-section-kicker">Zugang</p>
+        <h1 class="ci-login-title">Schulplaner</h1>
+        <p class="ci-login-copy">Eltern melden sich mit dem hinterlegten WebUntis-Zugang an.</p>
+        <div class="ci-login-actions">
+          <a class="ci-button ci-button-primary ci-button-block" id="oidc-login" href="/auth/login">Admin mit Milo anmelden</a>
+        </div>
+        <form class="ci-login-form" id="login-form">
+          <p class="ci-login-copy" id="legacy-login-copy">WebUntis-Zugang</p>
+          <label class="ci-field">
+            <span class="ci-label">Benutzername</span>
+            <input class="ci-input" id="login-username" name="username" type="text" autocomplete="username" required>
+          </label>
+          <label class="ci-field">
+            <span class="ci-label">Passwort</span>
+            <input class="ci-input" id="login-password" name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <p class="ci-login-copy" id="login-error" aria-live="polite"></p>
+          <div class="ci-login-actions">
+            <button class="ci-button ci-button-primary ci-button-block" type="submit">Anmelden</button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Schulplaner Zugang einrichten</title>
+    <link rel="icon" href="/static/ci/assets/favicon.svg?v=1.5.0" type="image/svg+xml">
+    <link rel="icon" href="/static/ci/assets/favicon-32.png?v=1.5.0" sizes="32x32" type="image/png">
+    <link rel="shortcut icon" href="/static/ci/assets/favicon.ico?v=1.5.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/ci/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#0f141a">
+    <link rel="stylesheet" href="/static/ci/tokens.css">
+    <link rel="stylesheet" href="/static/ci/ci.css">
+    <link rel="stylesheet" href="/static/app.css">
+  </head>
+  <body>
+    <div class="ci-app login-page setup-page">
+      <header class="ci-topbar">
+        <div class="ci-brand">
+          <div class="ci-mark" aria-hidden="true">
+            <img class="ci-mark-img" src="/static/ci/assets/milo-mark.svg" alt="">
+          </div>
+          <div>
+            <h1 class="ci-brand-title">Schulplaner</h1>
+            <p class="ci-brand-subtitle">WebUntis verbinden</p>
+          </div>
+        </div>
+        <div class="ci-topbar-meta">
+          <div class="ci-status" id="top-status">Setup</div>
+          <div class="ci-version">v0.9.1</div>
+        </div>
+      </header>
+
+      <main class="ci-main login-main">
+        <section class="login-panel">
+          <p class="ci-section-kicker">Elternzugang</p>
+          <h2 class="ci-h1">WebUntis-Zugang hinterlegen</h2>
+          <p class="profile-context" id="setup-profile-context">Einladung wird geprüft...</p>
+          <form class="login-form" id="setup-form">
+            <label class="ci-field">
+              <span class="ci-label">WebUntis Benutzername</span>
+              <input id="setup-username" name="username" type="text" autocomplete="username" required>
+            </label>
+            <label class="ci-field">
+              <span class="ci-label">WebUntis Passwort</span>
+              <input id="setup-password" name="password" type="password" autocomplete="current-password" required>
+            </label>
+            <p class="login-error" id="setup-error" aria-live="polite"></p>
+            <button class="ci-button" type="submit">WebUntis-Zugang aktivieren</button>
+          </form>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>
